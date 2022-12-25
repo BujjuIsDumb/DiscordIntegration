@@ -38,10 +38,10 @@ namespace DiscordIntegration
         ///     Initializes a new instance of the <see cref="MultiWebhookClient"/> class.
         /// </summary>
         /// <param name="webhookUrls">The webhook URLs.</param>
-        public MultiWebhookClient(List<string> webhookUrls)
+        public MultiWebhookClient(params string[] webhookUrls)
         {
             _clients = new List<WebhookClient>();
-            WebhookUrls = webhookUrls;
+            WebhookUrls = webhookUrls.ToList();
         }
 
         /// <summary>
