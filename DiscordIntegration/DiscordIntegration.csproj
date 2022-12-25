@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Title>Discord Integration</Title>
     <Authors>Bujju</Authors>
     <Description>A library to help integrate Discord into .NET applications using webhooks.</Description>
