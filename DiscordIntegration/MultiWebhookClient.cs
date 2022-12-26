@@ -27,6 +27,7 @@ namespace DiscordIntegration
     /// <summary>
     ///     A client that can send messages to multiple webhooks at once.
     /// </summary>
+    [Obsolete("This class is deprecated and will be removed in a future version. Please use a list of WebhookClient objects instead.")]
     public class MultiWebhookClient : IDisposable
     {
         /// <summary>
