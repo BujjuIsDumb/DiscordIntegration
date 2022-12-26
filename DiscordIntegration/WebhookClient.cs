@@ -73,7 +73,7 @@ namespace DiscordIntegration
                 Username = profile?.Username,
                 AvatarUrl = profile?.AvatarUrl,
                 Tts = message.Tts,
-                Embeds = message.Embeds.ToArray()
+                Embeds = message.Embeds?.ToArray()
             };
 
             var request = new HttpRequestMessage()
@@ -126,7 +126,7 @@ namespace DiscordIntegration
                 Username = profile?.Username,
                 AvatarUrl = profile?.AvatarUrl,
                 Tts = messaage.Tts,
-                Embeds = messaage.Embeds.ToArray()
+                Embeds = messaage.Embeds?.ToArray()
             }), new MediaTypeHeaderValue("application/json")), "payload_json");
 
             var request = new HttpRequestMessage()
