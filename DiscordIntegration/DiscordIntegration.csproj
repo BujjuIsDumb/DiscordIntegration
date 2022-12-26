@@ -4,7 +4,6 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
     <Version>1.0.1</Version>
   </PropertyGroup>
 
@@ -21,18 +20,8 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Content Include="icon.ico" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <None Include="..\icon.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Include="..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+    <None Include="..\icon.png" Pack="true" PackagePath="/" />
+    <None Include="..\LICENSE" Pack="true" PackagePath="/" />
   </ItemGroup>
 
 </Project>
