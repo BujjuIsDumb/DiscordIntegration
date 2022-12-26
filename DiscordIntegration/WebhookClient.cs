@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 using System.Net.Http.Headers;
+using System.Reflection.PortableExecutable;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using DiscordIntegration.Entities;
@@ -88,59 +89,6 @@ namespace DiscordIntegration
                 throw new BadRequestException(response);
         }
 
-        /// <summary>
-        ///     Executes this webhook.
-        /// </summary>
-        /// <param name="messaage">The message to send.</param>
-        /// <param name="files">The files to send.</param>
-        /// <param name="profile">The webhook profile override to use.</param>
-        /// <returns>A task that represents the asynchronous operation.</returns>
-        /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
-        public async Task ExecuteAsync(WebhookMessage messaage, List<WebhookFile> files, WebhookProfile profile = null)
-        {
-            var attachments = new List<PayloadAttachment>();
-            var content = new MultipartFormDataContent();
-            
-            for (int i = 0; i < files.Count - 1; i++)
-            {
-                var file = files[i];
-
-                // Add attachment.
-                attachments.Add(new PayloadAttachment()
-                {
-                    Id = i,
-                    Description = file.AltText,
-                    FileName = file.File.Name,
-                });
-
-                // Add file bytes.
-                var data = new byte[file.File.Length];
-                await file.File.OpenRead().ReadAsync(data);
-                content.Add(new ByteArrayContent(data), "file", file.File.Name);
-            }
-
-            // Add payload.
-            content.Add(new StringContent(JsonSerializer.Serialize(new Payload()
-            {
-                Content = messaage.Content,
-                Username = profile?.Username,
-                AvatarUrl = profile?.AvatarUrl,
-                Tts = messaage.Tts,
-                Embeds = messaage.Embeds?.ToArray()
-            }), new MediaTypeHeaderValue("application/json")), "payload_json");
-
-            var request = new HttpRequestMessage()
-            {
-                Method = HttpMethod.Post,
-                Content = content
-            };
-
-            var response = await _client.SendAsync(request);
-
-            if (!response.IsSuccessStatusCode)
-                throw new BadRequestException(response);
-        }
-
         public void Dispose()
         {
             _client.Dispose();
@@ -181,33 +129,6 @@ namespace DiscordIntegration
             /// </summary>
             [JsonPropertyName("embeds")]
             public Embed[] Embeds { get; set; }
-
-            /// <summary>
-            ///     Gets or sets the attachments of the message.
-            /// </summary>
-            [JsonPropertyName("attachments")]
-            public PayloadAttachment[] Attachments { get; set; }
-        }
-
-        /// <summary>
-        ///     Represents an attachment to send with a message.
-        /// </summary>
-        internal class PayloadAttachment
-        {
-            /// <summary>
-            ///     Gets or sets the attachment ID.
-            /// </summary>
-            public int Id { get; set; }
-
-            /// <summary>
-            ///     Gets or sets the attachment's alt text.
-            /// </summary>
-            public string Description { get; set; }
-
-            /// <summary>
-            ///     Gets or sets the attachment's filename.
-            /// </summary>
-            public string FileName { get; set; }
         }
     }
 }
