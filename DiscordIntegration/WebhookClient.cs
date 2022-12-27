@@ -89,6 +89,52 @@ namespace DiscordIntegration
                 throw new BadRequestException(response);
         }
 
+        /// <summary>
+        ///     Executes this webhook.
+        /// </summary>
+        /// <param name="message">The message to send.</param>
+        /// <param name="attachment">The attachment to send.</param>
+        /// <param name="profile">The webhook profile override to use.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="attachment"/> isn't a png, jpg, or gif file.</exception>
+        /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
+        public async Task ExecuteAsync(WebhookMessage message, WebhookAttachment attachment, WebhookProfile profile = null)
+        {
+            if (Path.GetExtension(attachment.FileName) != ".png" && Path.GetExtension(attachment.FileName) != ".jpg" && Path.GetExtension(attachment.FileName) != ".gif")
+                throw new ArgumentException("Attachment must be a png, jpg, or gif file.", nameof(attachment));
+
+            var payload = new Payload()
+            {
+                Content = message.Content,
+                Username = profile?.Username,
+                AvatarUrl = profile?.AvatarUrl,
+                Tts = message.Tts,
+                Embeds = message.Embeds?.ToArray(),
+                Attachments = new[] { attachment }
+            };
+
+            var content = new MultipartFormDataContent
+            {
+                { new StringContent(JsonSerializer.Serialize(payload), new MediaTypeHeaderValue("application/json")), "payload_json" }
+            };
+            
+            // Add the attachment data.
+            var fileContent = new ByteArrayContent(attachment.Data);
+            fileContent.Headers.Add("Content-Type", $"image/{Path.GetExtension(attachment.FileName)[1..]}");
+            content.Add(fileContent, "files[0]", attachment.FileName);
+
+            var request = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Post,
+                Content = content
+            };
+
+            var response = await _client.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+                throw new BadRequestException(response);
+        }
+
         public void Dispose()
         {
             _client.Dispose();
@@ -129,6 +175,12 @@ namespace DiscordIntegration
             /// </summary>
             [JsonPropertyName("embeds")]
             public Embed[] Embeds { get; set; }
+
+            /// <summary>
+            ///     Gets or sets the attachments of the message.
+            /// </summary>
+            [JsonPropertyName("attachments")]
+            public WebhookAttachment[] Attachments { get; set; }
         }
     }
 }

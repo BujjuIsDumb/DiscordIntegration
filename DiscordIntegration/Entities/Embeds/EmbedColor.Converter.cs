@@ -33,7 +33,7 @@ namespace DiscordIntegration.Entities.Embeds
         internal class Converter : JsonConverter<EmbedColor>
         {
             public override EmbedColor Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-                => new EmbedColor(reader.GetInt32());
+                => new(reader.GetInt32());
 
             public override void Write(Utf8JsonWriter writer, EmbedColor value, JsonSerializerOptions options)
                 => writer.WriteNumberValue(value._value);
