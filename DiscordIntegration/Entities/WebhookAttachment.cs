@@ -51,7 +51,8 @@ namespace DiscordIntegration.Entities
         ///     Gets or sets the attachment ID. Always 0, as the webhook client only supports sending one attachment.
         /// </summary>
         [JsonPropertyName("id")]
-        public string Id { get; internal set; } = "0";
+        [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
+        public int Id { get; internal set; } = 0;
 
         /// <summary>
         ///     Gets a <see cref="WebhookAttachment"/> from a local file.

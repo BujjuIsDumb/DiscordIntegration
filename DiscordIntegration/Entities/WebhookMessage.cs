@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System.Text.Json.Serialization;
 using DiscordIntegration.Entities.Embeds;
 
 namespace DiscordIntegration.Entities
@@ -32,17 +33,39 @@ namespace DiscordIntegration.Entities
         /// <summary>
         ///     Gets or sets the content of this message.
         /// </summary>
+        [JsonPropertyName("content")]
         public string Content { get; set; }
 
         /// <summary>
         ///     Gets or sets the embeds of this message.
         /// </summary>
+        [JsonPropertyName("embeds")]
         public List<Embed> Embeds { get; set; }
 
         /// <summary>
         ///     Gets or sets whether this message should be sent as a text-to-speech message.
         /// </summary>
+        [JsonPropertyName("tts")]
         public bool Tts { get; set; }
+
+        /// <summary>
+        ///     Gets the message's <see href="https://en.wikipedia.org/wiki/Snowflake_ID">Snowflake ID</see>. Null if unsent.
+        /// </summary>
+        [JsonPropertyName("id")]
+        [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
+        public ulong? MessageId { get; internal set; }
+
+        /// <summary>
+        ///     Gets when this message was created. Null if unsent.
+        /// </summary>
+        [JsonPropertyName("timestamp")]
+        public DateTime? CreatedAt { get; internal set; }
+
+        /// <summary>
+        ///     Gets when this message was last edited. Null if unsent.
+        /// </summary>
+        [JsonPropertyName("edited_timestamp")]
+        public DateTime? LastEditedAt { get; internal set; }
 
         /// <summary>
         ///     Adds content to this message.
