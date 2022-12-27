@@ -100,7 +100,7 @@ namespace DiscordIntegration
         /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
         public async Task ExecuteAsync(WebhookMessage message, WebhookAttachment attachment, WebhookProfile profile = null)
         {
-            if (Path.GetExtension(attachment.FileName) != ".png" && Path.GetExtension(attachment.FileName) != ".jpg" && Path.GetExtension(attachment.FileName) != ".gif")
+            if (Path.GetExtension(attachment.FileName) != ".jpg" && Path.GetExtension(attachment.FileName) != ".jpeg" && Path.GetExtension(attachment.FileName) != ".gif" && Path.GetExtension(attachment.FileName) != ".png")
                 throw new ArgumentException("Attachment must be a png, jpg, or gif file.", nameof(attachment));
 
             var payload = new Payload()
