@@ -27,7 +27,6 @@ using System.Text.RegularExpressions;
 using DiscordIntegration.Entities;
 using DiscordIntegration.Entities.Embeds;
 using DiscordIntegration.Exceptions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DiscordIntegration
 {
