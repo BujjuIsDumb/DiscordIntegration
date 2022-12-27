@@ -158,12 +158,11 @@ namespace DiscordIntegration
         /// <summary>
         ///     Overwrites a message sent by this webhook.
         /// </summary>
-        /// <param name="message">The message to edit.</param>
-        /// <param name="edit">The edits to make.</param>
+        /// <param name="messageId">The Id of then message to edit.</param>
+        /// <param name="newMessage">The new message to send.</param>
         /// <returns>The edited message.</returns>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="message"/> hasn't been sent yet.</exception>
         /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
-        public async Task EditMessageAsync(ulong messageId, WebhookMessage newMessage)
+        public async Task EditMessageAsync(ulong messageId, WebhookMessage newMessage, WebhookAttachment attachment)
         {
             var payload = new Payload()
             {
