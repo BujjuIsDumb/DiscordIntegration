@@ -34,10 +34,7 @@ namespace DiscordIntegration.Exceptions
         /// </summary>
         /// <param name="response">The response that caused the exception.</param>
         public BadRequestException(HttpResponseMessage response)
-            : base($"The request to the Discord API failed with status code {(int)response.StatusCode} ({response.StatusCode}).")
-        {
-            Response = response;
-        }
+            : base($"The request to the Discord API failed with status code {(int)response.StatusCode} ({response.StatusCode}).") => Response = response;
 
         /// <summary>
         ///     Gets the response that caused the exception.

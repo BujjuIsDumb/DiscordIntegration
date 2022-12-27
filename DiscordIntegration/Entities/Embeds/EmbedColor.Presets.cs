@@ -83,7 +83,7 @@ namespace DiscordIntegration.Entities.Embeds
         ///     Gets an <see cref="EmbedColor"/> representing emerald green.
         /// </summary>
         public static EmbedColor Emerald { get; } = new EmbedColor("106440");
-        
+
         /// <summary>
         ///     Gets an <see cref="EmbedColor"/> representing olive.
         /// </summary>

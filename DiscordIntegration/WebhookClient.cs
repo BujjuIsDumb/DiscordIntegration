@@ -58,6 +58,7 @@ namespace DiscordIntegration
             get => _client.BaseAddress.ToString();
             set
             {
+                // Check if the URL is valid.
                 if (!Regex.IsMatch(value, @"https:\/\/discord\.com\/api\/(v\d+\/)?webhooks\/\d{17,19}\/.{68}"))
                     throw new InvalidWebhookUrlException("Please provide a valid webhook URL.");
 
@@ -85,21 +86,23 @@ namespace DiscordIntegration
 
             payload.Validate();
 
-            var request = new HttpRequestMessage()
+            // Send the request.
+            var response = await _client.SendAsync(new HttpRequestMessage()
             {
                 Method = HttpMethod.Post,
                 Content = new StringContent(JsonSerializer.Serialize(payload), new MediaTypeHeaderValue("application/json")),
                 RequestUri = new Uri(WebhookUrl + "?wait=true")
-            };
-
-            var response = await _client.SendAsync(request);
+            });
 
             if (response.IsSuccessStatusCode)
             {
                 string responseContent = await response.Content.ReadAsStringAsync();
                 return ulong.Parse(JsonDocument.Parse(responseContent).RootElement.GetProperty("id").GetString());
             }
-            else throw new BadRequestException(response);
+            else
+            {
+                throw new BadRequestException(response);
+            }
         }
 
         /// <summary>
@@ -113,6 +116,7 @@ namespace DiscordIntegration
         /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
         public async Task<ulong> ExecuteAsync(WebhookMessage message, WebhookAttachment attachment, WebhookProfile profile = null)
         {
+            // Check if the attachment is a png, jpg, or gif file.
             if (Path.GetExtension(attachment.FileName) != ".jpg" && Path.GetExtension(attachment.FileName) != ".jpeg" && Path.GetExtension(attachment.FileName) != ".gif" && Path.GetExtension(attachment.FileName) != ".png")
                 throw new ArgumentException("Attachment must be a PNG, JPG, or GIF file.", nameof(attachment));
 
@@ -132,27 +136,29 @@ namespace DiscordIntegration
             {
                 { new StringContent(JsonSerializer.Serialize(payload), new MediaTypeHeaderValue("application/json")), "payload_json" }
             };
-            
+
             // Add the attachment data.
             var fileContent = new ByteArrayContent(attachment.Data);
             fileContent.Headers.Add("Content-Type", $"image/{Path.GetExtension(attachment.FileName)[1..]}");
             content.Add(fileContent, "files[0]", attachment.FileName);
 
-            var request = new HttpRequestMessage()
+            // Send the request.
+            var response = await _client.SendAsync(new HttpRequestMessage()
             {
                 Method = HttpMethod.Post,
                 Content = content,
                 RequestUri = new Uri(WebhookUrl + "?wait=true")
-            };
-
-            var response = await _client.SendAsync(request);
+            });
 
             if (response.IsSuccessStatusCode)
             {
                 string responseContent = await response.Content.ReadAsStringAsync();
                 return ulong.Parse(JsonDocument.Parse(responseContent).RootElement.GetProperty("id").GetString());
             }
-            else throw new BadRequestException(response);
+            else
+            {
+                throw new BadRequestException(response);
+            }
         }
 
         /// <summary>
@@ -172,14 +178,13 @@ namespace DiscordIntegration
 
             payload.Validate();
 
-            var request = new HttpRequestMessage()
+            // Send the request.
+            var response = await _client.SendAsync(new HttpRequestMessage()
             {
                 Method = HttpMethod.Patch,
                 Content = new StringContent(JsonSerializer.Serialize(payload), new MediaTypeHeaderValue("application/json")),
-                RequestUri = new Uri(WebhookUrl.Replace("?wait=true", null) + $"/messages/{messageId}")
-            };
-
-            var response = await _client.SendAsync(request);
+                RequestUri = new Uri(WebhookUrl + $"/messages/{messageId}")
+            });
 
             if (!response.IsSuccessStatusCode)
                 throw new BadRequestException(response);
@@ -205,7 +210,7 @@ namespace DiscordIntegration
             };
 
             payload.Validate();
-            
+
             var content = new MultipartFormDataContent
             {
                 { new StringContent(JsonSerializer.Serialize(payload), new MediaTypeHeaderValue("application/json")), "payload_json" }
@@ -216,14 +221,13 @@ namespace DiscordIntegration
             fileContent.Headers.Add("Content-Type", $"image/{Path.GetExtension(attachment.FileName)[1..]}");
             content.Add(fileContent, "files[0]", attachment.FileName);
 
-            var request = new HttpRequestMessage()
+            // Send the request.
+            var response = await _client.SendAsync(new HttpRequestMessage()
             {
                 Method = HttpMethod.Patch,
                 Content = content,
-                RequestUri = new Uri(WebhookUrl.Replace("?wait=true", null) + $"/messages/{messageId}")
-            };
-
-            var response = await _client.SendAsync(request);
+                RequestUri = new Uri(WebhookUrl + $"/messages/{messageId}")
+            });
 
             if (!response.IsSuccessStatusCode)
                 throw new BadRequestException(response);
@@ -237,13 +241,12 @@ namespace DiscordIntegration
         /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
         public async Task DeleteMessageAsync(ulong messageId)
         {
-            var request = new HttpRequestMessage()
+            // Send the request.
+            var response = await _client.SendAsync(new HttpRequestMessage()
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri(WebhookUrl.Replace("?wait=true", null) + $"/messages/{messageId}")
-            };
-
-            var response = await _client.SendAsync(request);
+                RequestUri = new Uri(WebhookUrl + $"/messages/{messageId}")
+            });
 
             if (!response.IsSuccessStatusCode)
                 throw new BadRequestException(response);
