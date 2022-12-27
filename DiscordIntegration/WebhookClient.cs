@@ -101,7 +101,7 @@ namespace DiscordIntegration
         public async Task ExecuteAsync(WebhookMessage message, WebhookAttachment attachment, WebhookProfile profile = null)
         {
             if (Path.GetExtension(attachment.FileName) != ".jpg" && Path.GetExtension(attachment.FileName) != ".jpeg" && Path.GetExtension(attachment.FileName) != ".gif" && Path.GetExtension(attachment.FileName) != ".png")
-                throw new ArgumentException("Attachment must be a png, jpg, or gif file.", nameof(attachment));
+                throw new ArgumentException("Attachment must be a PNG, JPG, or GIF file.", nameof(attachment));
 
             var payload = new Payload()
             {
