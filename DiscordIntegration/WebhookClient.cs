@@ -70,9 +70,9 @@ namespace DiscordIntegration
         /// </summary>
         /// <param name="message">The message to send.</param>
         /// <param name="profile">The webhook profile override to use.</param>
-        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <returns>The message that was sent.</returns>
         /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
-        public async Task ExecuteAsync(WebhookMessage message, WebhookProfile profile = null)
+        public async Task<ulong> ExecuteAsync(WebhookMessage message, WebhookProfile profile = null)
         {
             var payload = new Payload()
             {
@@ -88,13 +88,18 @@ namespace DiscordIntegration
             var request = new HttpRequestMessage()
             {
                 Method = HttpMethod.Post,
-                Content = new StringContent(JsonSerializer.Serialize(payload), new MediaTypeHeaderValue("application/json"))
+                Content = new StringContent(JsonSerializer.Serialize(payload), new MediaTypeHeaderValue("application/json")),
+                RequestUri = new Uri(WebhookUrl + "?wait=true")
             };
 
             var response = await _client.SendAsync(request);
 
-            if (!response.IsSuccessStatusCode)
-                throw new BadRequestException(response);
+            if (response.IsSuccessStatusCode)
+            {
+                string responseContent = await response.Content.ReadAsStringAsync();
+                return ulong.Parse(JsonDocument.Parse(responseContent).RootElement.GetProperty("id").GetString());
+            }
+            else throw new BadRequestException(response);
         }
 
         /// <summary>
@@ -103,10 +108,10 @@ namespace DiscordIntegration
         /// <param name="message">The message to send.</param>
         /// <param name="attachment">The attachment to send.</param>
         /// <param name="profile">The webhook profile override to use.</param>
-        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <returns>The message that was sent.</returns>
         /// <exception cref="ArgumentException">Thrown when <paramref name="attachment"/> isn't a png, jpg, or gif file.</exception>
         /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
-        public async Task ExecuteAsync(WebhookMessage message, WebhookAttachment attachment, WebhookProfile profile = null)
+        public async Task<ulong> ExecuteAsync(WebhookMessage message, WebhookAttachment attachment, WebhookProfile profile = null)
         {
             if (Path.GetExtension(attachment.FileName) != ".jpg" && Path.GetExtension(attachment.FileName) != ".jpeg" && Path.GetExtension(attachment.FileName) != ".gif" && Path.GetExtension(attachment.FileName) != ".png")
                 throw new ArgumentException("Attachment must be a PNG, JPG, or GIF file.", nameof(attachment));
@@ -136,7 +141,63 @@ namespace DiscordIntegration
             var request = new HttpRequestMessage()
             {
                 Method = HttpMethod.Post,
-                Content = content
+                Content = content,
+                RequestUri = new Uri(WebhookUrl + "?wait=true")
+            };
+
+            var response = await _client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string responseContent = await response.Content.ReadAsStringAsync();
+                return ulong.Parse(JsonDocument.Parse(responseContent).RootElement.GetProperty("id").GetString());
+            }
+            else throw new BadRequestException(response);
+        }
+
+        /// <summary>
+        ///     Overwrites a message sent by this webhook.
+        /// </summary>
+        /// <param name="message">The message to edit.</param>
+        /// <param name="edit">The edits to make.</param>
+        /// <returns>The edited message.</returns>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="message"/> hasn't been sent yet.</exception>
+        /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
+        public async Task EditMessageAsync(ulong messageId, WebhookMessage newMessage)
+        {
+            var payload = new Payload()
+            {
+                Content = newMessage.Content,
+                Embeds = newMessage.Embeds?.ToArray()
+            };
+
+            payload.Validate();
+
+            var request = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Patch,
+                Content = new StringContent(JsonSerializer.Serialize(payload), new MediaTypeHeaderValue("application/json")),
+                RequestUri = new Uri(WebhookUrl.Replace("?wait=true", null) + $"/messages/{messageId}")
+            };
+
+            var response = await _client.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+                throw new BadRequestException(response);
+        }
+
+        /// <summary>
+        ///     Deletes a message sent by this webhook.
+        /// </summary>
+        /// <param name="message">The message to delete.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
+        public async Task DeleteMessageAsync(ulong messageId)
+        {
+            var request = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri(WebhookUrl.Replace("?wait=true", null) + $"/messages/{messageId}")
             };
 
             var response = await _client.SendAsync(request);

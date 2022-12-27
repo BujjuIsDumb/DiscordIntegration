@@ -49,25 +49,6 @@ namespace DiscordIntegration.Entities
         public bool Tts { get; set; }
 
         /// <summary>
-        ///     Gets the message's <see href="https://en.wikipedia.org/wiki/Snowflake_ID">Snowflake ID</see>. Null if unsent.
-        /// </summary>
-        [JsonPropertyName("id")]
-        [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
-        public ulong? MessageId { get; internal set; }
-
-        /// <summary>
-        ///     Gets when this message was created. Null if unsent.
-        /// </summary>
-        [JsonPropertyName("timestamp")]
-        public DateTime? CreatedAt { get; internal set; }
-
-        /// <summary>
-        ///     Gets when this message was last edited. Null if unsent.
-        /// </summary>
-        [JsonPropertyName("edited_timestamp")]
-        public DateTime? LastEditedAt { get; internal set; }
-
-        /// <summary>
         ///     Adds content to this message.
         /// </summary>
         /// <param name="content">The content to add.</param>
