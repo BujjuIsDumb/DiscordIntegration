@@ -65,7 +65,7 @@ namespace DiscordIntegration.Entities
         {
             return new WebhookAttachment()
             {
-                FileName = Path.GetFileName((spoiler ? "SPOILER_" : null) + filePath),
+                FileName = (spoiler ? "SPOILER_" : null) + Path.GetFileName(filePath),
                 AltText = altText,
                 Data = File.ReadAllBytes(filePath)
             };
