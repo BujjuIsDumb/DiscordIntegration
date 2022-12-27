@@ -90,9 +90,9 @@ namespace DiscordIntegration
                 Method = HttpMethod.Post,
                 Content = new StringContent(JsonSerializer.Serialize(payload), new MediaTypeHeaderValue("application/json"))
             };
-            
+
             var response = await _client.SendAsync(request);
-            
+
             if (!response.IsSuccessStatusCode)
                 throw new BadRequestException(response);
         }
@@ -198,49 +198,50 @@ namespace DiscordIntegration
             /// <exception cref="ArgumentException">Thrown if the payload is invalid.</exception>
             public void Validate()
             {
-                // Limit checks
                 if (Content?.Length > 2000)
                     throw new ArgumentException("Content must be less than 2000 characters.", nameof(Content));
 
                 if (Username?.Length > 80)
                     throw new ArgumentException("Username must be less than 80 characters.", nameof(Username));
 
-                if (Embeds.Any(x => x.Title.Length > 256))
-                    throw new ArgumentException("Embed title must be less than 256 characters.", nameof(Embeds));
-
-                if (Embeds.Any(x => x.Description.Length > 4096))
-                    throw new ArgumentException("Embed description must be less than 4096 characters.", nameof(Embeds));
-
-                if (Embeds.Any(x => x.Fields.Count > 25))
-                    throw new ArgumentException("Embed must have less than 25 fields.", nameof(Embeds));
-
-                if (Embeds.Any(x => x.Fields.Any(y => y.Name.Length > 256)))
-                    throw new ArgumentException("Embed field name must be less than 256 characters.", nameof(Embeds));
-
-                if (Embeds.Any(x => x.Fields.Any(y => y.Value.Length > 1024)))
-                    throw new ArgumentException("Embed field value must be less than 1024 characters.", nameof(Embeds));
-
-                if (Embeds.Any(x => x.Footer.Text.Length > 2048))
-                    throw new ArgumentException("Embed footer text must be less than 2048 characters.", nameof(Embeds));
-
-                if (Embeds.Any(x => x.Author.Name.Length > 256))
-                    throw new ArgumentException("Embed author name must be less than 256 characters.", nameof(Embeds));
-
-                // Empty checks
                 if (string.IsNullOrWhiteSpace(Content) && Embeds.Length == 0 && Attachments.Length == 0)
                     throw new ArgumentException("Content, embeds, or attachments must be provided.", nameof(Content));
 
-                if (Embeds.Any(x => string.IsNullOrEmpty(x.Title) && string.IsNullOrEmpty(x.Description) && x.Fields.Count == 0 && x.Image == null && x.Thumbnail == null && x.Footer == null && x.Author == null))
-                    throw new ArgumentException("Embed must have a title, description, fields, image, thumbnail, footer, or author.", nameof(Embeds));
+                if (Embeds != null)
+                {
+                    if (Embeds.Any(x => x.Title.Length > 256))
+                        throw new ArgumentException("Embed title must be less than 256 characters.", nameof(Embeds));
 
-                if (Embeds.Any(x => x.Fields.Any(y => string.IsNullOrEmpty(y.Name) || string.IsNullOrEmpty(y.Value))))
-                    throw new ArgumentException("Embed field must have a name and value.", nameof(Embeds));
+                    if (Embeds.Any(x => x.Description.Length > 4096))
+                        throw new ArgumentException("Embed description must be less than 4096 characters.", nameof(Embeds));
 
-                if (Embeds.Any(x => x.Footer != null && string.IsNullOrEmpty(x.Footer.Text)))
-                    throw new ArgumentException("Embed footer must have text.", nameof(Embeds));
+                    if (Embeds.Any(x => x.Fields.Count > 25))
+                        throw new ArgumentException("Embed must have less than 25 fields.", nameof(Embeds));
 
-                if (Embeds.Any(x => x.Author != null && string.IsNullOrEmpty(x.Author.Name)))
-                    throw new ArgumentException("Embed author must have a name.", nameof(Embeds));
+                    if (Embeds.Any(x => x.Fields.Any(y => y.Name.Length > 256)))
+                        throw new ArgumentException("Embed field name must be less than 256 characters.", nameof(Embeds));
+
+                    if (Embeds.Any(x => x.Fields.Any(y => y.Value.Length > 1024)))
+                        throw new ArgumentException("Embed field value must be less than 1024 characters.", nameof(Embeds));
+
+                    if (Embeds.Any(x => x.Footer.Text.Length > 2048))
+                        throw new ArgumentException("Embed footer text must be less than 2048 characters.", nameof(Embeds));
+
+                    if (Embeds.Any(x => x.Author.Name.Length > 256))
+                        throw new ArgumentException("Embed author name must be less than 256 characters.", nameof(Embeds));
+
+                    if (Embeds.Any(x => string.IsNullOrEmpty(x.Title) && string.IsNullOrEmpty(x.Description) && x.Fields.Count == 0 && x.Image == null && x.Thumbnail == null && x.Footer == null && x.Author == null))
+                        throw new ArgumentException("Embed must have a title, description, fields, image, thumbnail, footer, or author.", nameof(Embeds));
+
+                    if (Embeds.Any(x => x.Fields.Any(y => string.IsNullOrEmpty(y.Name) || string.IsNullOrEmpty(y.Value))))
+                        throw new ArgumentException("Embed field must have a name and value.", nameof(Embeds));
+
+                    if (Embeds.Any(x => x.Footer != null && string.IsNullOrEmpty(x.Footer.Text)))
+                        throw new ArgumentException("Embed footer must have text.", nameof(Embeds));
+
+                    if (Embeds.Any(x => x.Author != null && string.IsNullOrEmpty(x.Author.Name)))
+                        throw new ArgumentException("Embed author must have a name.", nameof(Embeds));
+                }
             }
         }
     }
