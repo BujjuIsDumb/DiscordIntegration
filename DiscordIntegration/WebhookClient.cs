@@ -27,6 +27,7 @@ using System.Text.RegularExpressions;
 using DiscordIntegration.Entities;
 using DiscordIntegration.Entities.Embeds;
 using DiscordIntegration.Exceptions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DiscordIntegration
 {
@@ -162,7 +163,7 @@ namespace DiscordIntegration
         /// <param name="newMessage">The new message to send.</param>
         /// <returns>The edited message.</returns>
         /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
-        public async Task EditMessageAsync(ulong messageId, WebhookMessage newMessage, WebhookAttachment attachment)
+        public async Task EditMessageAsync(ulong messageId, WebhookMessage newMessage)
         {
             var payload = new Payload()
             {
@@ -186,9 +187,53 @@ namespace DiscordIntegration
         }
 
         /// <summary>
+        ///     Overwrites a message sent by this webhook.
+        /// </summary>
+        /// <param name="messageId">The Id of then message to edit.</param>
+        /// <param name="newMessage">The new message to send.</param>
+        /// <returns>The edited message.</returns>
+        /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
+        public async Task EditMessageAsync(ulong messageId, WebhookMessage newMessage, WebhookAttachment attachment)
+        {
+            if (Path.GetExtension(attachment.FileName) != ".jpg" && Path.GetExtension(attachment.FileName) != ".jpeg" && Path.GetExtension(attachment.FileName) != ".gif" && Path.GetExtension(attachment.FileName) != ".png")
+                throw new ArgumentException("Attachment must be a PNG, JPG, or GIF file.", nameof(attachment));
+
+            var payload = new Payload()
+            {
+                Content = newMessage.Content,
+                Embeds = newMessage.Embeds?.ToArray(),
+                Attachments = new[] { attachment }
+            };
+
+            payload.Validate();
+            
+            var content = new MultipartFormDataContent
+            {
+                { new StringContent(JsonSerializer.Serialize(payload), new MediaTypeHeaderValue("application/json")), "payload_json" }
+            };
+
+            // Add the attachment data.
+            var fileContent = new ByteArrayContent(attachment.Data);
+            fileContent.Headers.Add("Content-Type", $"image/{Path.GetExtension(attachment.FileName)[1..]}");
+            content.Add(fileContent, "files[0]", attachment.FileName);
+
+            var request = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Patch,
+                Content = content,
+                RequestUri = new Uri(WebhookUrl.Replace("?wait=true", null) + $"/messages/{messageId}")
+            };
+
+            var response = await _client.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+                throw new BadRequestException(response);
+        }
+
+        /// <summary>
         ///     Deletes a message sent by this webhook.
         /// </summary>
-        /// <param name="message">The message to delete.</param>
+        /// <param name="messageId">The ID of the message to delete.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
         /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
         public async Task DeleteMessageAsync(ulong messageId)
