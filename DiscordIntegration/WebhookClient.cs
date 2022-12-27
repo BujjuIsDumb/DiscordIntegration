@@ -23,6 +23,7 @@
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using DiscordIntegration.Entities;
 using DiscordIntegration.Entities.Embeds;
 using DiscordIntegration.Exceptions;
@@ -55,7 +56,13 @@ namespace DiscordIntegration
         public string WebhookUrl
         {
             get => _client.BaseAddress.ToString();
-            set => _client.BaseAddress = new Uri(value);
+            set
+            {
+                if (!Regex.IsMatch(value, @"https:\/\/discord\.com\/api\/(v\d+\/)?webhooks\/\d{17,19}\/.{68}"))
+                    throw new InvalidWebhookUrlException("Please provide a valid webhook URL.");
+
+                _client.BaseAddress = new Uri(value);
+            }
         }
 
         /// <summary>
