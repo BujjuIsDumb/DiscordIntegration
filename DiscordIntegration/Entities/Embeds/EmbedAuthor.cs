@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace DiscordIntegration.Entities.Embeds
@@ -47,7 +46,6 @@ namespace DiscordIntegration.Entities.Embeds
         ///     Gets or sets the author name.
         /// </summary>
         [JsonPropertyName("name")]
-        [MaxLength(256)]
         public string Name { get; set; }
 
         /// <summary>

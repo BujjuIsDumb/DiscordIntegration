@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.DataAnnotations;
 using DiscordIntegration.Entities.Embeds;
 
 namespace DiscordIntegration.Entities
@@ -33,13 +32,11 @@ namespace DiscordIntegration.Entities
         /// <summary>
         ///     Gets or sets the content of this message.
         /// </summary>
-        [MaxLength(2000)]
         public string Content { get; set; }
 
         /// <summary>
         ///     Gets or sets the embeds of this message.
         /// </summary>
-        [MaxLength(10)]
         public List<Embed> Embeds { get; set; }
 
         /// <summary>

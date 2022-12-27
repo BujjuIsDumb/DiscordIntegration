@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace DiscordIntegration.Entities.Embeds
@@ -45,7 +44,6 @@ namespace DiscordIntegration.Entities.Embeds
         ///     Gets or sets the footer text.
         /// </summary>
         [JsonPropertyName("text")]
-        [MaxLength(2048)]
         public string Text { get; set; }
 
         /// <summary>

@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace DiscordIntegration.Entities.Embeds
@@ -34,14 +33,12 @@ namespace DiscordIntegration.Entities.Embeds
         ///     Gets or sets the title of this embed.
         /// </summary>
         [JsonPropertyName("title")]
-        [MaxLength(256)]
         public string Title { get; set; }
 
         /// <summary>
         ///     Gets or sets the description of this embed.
         /// </summary>
         [JsonPropertyName("description")]
-        [MaxLength(4096)]
         public string Description { get; set; }
 
         /// <summary>
@@ -91,7 +88,6 @@ namespace DiscordIntegration.Entities.Embeds
         ///     Gets or sets the fields of this embed.
         /// </summary>
         [JsonPropertyName("fields")]
-        [MaxLength(25)]
         public List<EmbedField> Fields { get; set; }
 
         /// <summary>

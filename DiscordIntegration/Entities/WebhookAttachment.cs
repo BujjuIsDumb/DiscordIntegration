@@ -21,8 +21,6 @@
 // SOFTWARE.
 
 using System.Text.Json.Serialization;
-using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace DiscordIntegration.Entities
 {
@@ -41,7 +39,6 @@ namespace DiscordIntegration.Entities
         ///     Gets or sets the attachment's alt text for screen readers.
         /// </summary>
         [JsonPropertyName("description")]
-        [MaxLength(1024)]
         public string AltText { get; set; }
 
         /// <summary>

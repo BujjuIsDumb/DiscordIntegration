@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace DiscordIntegration.Entities
@@ -34,7 +33,6 @@ namespace DiscordIntegration.Entities
         ///     Gets or sets the usernamename of this profile.
         /// </summary>
         [JsonPropertyName("username")]
-        [MaxLength(80)]
         public string Username { get; set; }
 
         /// <summary>
