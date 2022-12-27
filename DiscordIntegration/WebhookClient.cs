@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 using System.Net.Http.Headers;
-using System.Reflection.PortableExecutable;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using DiscordIntegration.Entities;
