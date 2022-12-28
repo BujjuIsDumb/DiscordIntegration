@@ -60,7 +60,7 @@ namespace DiscordIntegration
             {
                 // Check if the URL is valid.
                 if (!Regex.IsMatch(value, @"https:\/\/discord\.com\/api\/(v\d+\/)?webhooks\/\d{17,19}\/.{68}"))
-                    throw new UriFormatException("Please provide a valid webhook URL.");
+                    throw new Exception("Please provide a valid webhook URL.");
 
                 _client.BaseAddress = new Uri(value);
             }
