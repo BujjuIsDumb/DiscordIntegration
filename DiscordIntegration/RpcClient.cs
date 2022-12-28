@@ -131,8 +131,14 @@ namespace DiscordIntegration
             _isDisposed = true;
         }
 
+        /// <summary>
+        ///     An event fired when a user requests to join the game.
+        /// </summary>
         public event EventHandler<JoinRequestReceivedEventArgs> JoinRequestReceived;
 
+        /// <summary>
+        ///     An event fired when a user joins the game.
+        /// </summary>
         public event EventHandler UserJoined;
     }
 }

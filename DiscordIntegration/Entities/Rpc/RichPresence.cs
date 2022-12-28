@@ -40,22 +40,28 @@ namespace DiscordIntegration.Entities.Rpc
         public string Details { get; set; }
 
         /// <summary>
-        ///     Gets or sets the timestamp of this rich presence.
+        ///     Gets or sets the timestamp information of this rich presence.
         /// </summary>
         public RichPresenceTimestamp Timestamp { get; set; }
 
         /// <summary>
-        ///     Gets or sets the large image of this rich presence.
+        ///     Gets or sets the large image information of this rich presence.
         /// </summary>
         public RichPresenceMedia LargeImage { get; set; }
 
         /// <summary>
-        ///     Gets or sets the small image of this rich presence.
+        ///     Gets or sets the small image information of this rich presence.
         /// </summary>
         public RichPresenceMedia SmallImage { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the party information of this rich presence.
+        /// </summary>
         public RichPresenceParty Party { get; set; }
 
+        /// <summary>
+        ///     Gets or sets whether the match is in progress.
+        /// </summary>
         public bool InProgress { get; set; }
 
         internal string JoinSecret { get; set; }
@@ -85,7 +91,7 @@ namespace DiscordIntegration.Entities.Rpc
         }
 
         /// <summary>
-        ///     Adds a timestamp to this RPC.
+        ///     Adds timestamp information to this RPC.
         /// </summary>
         /// <param name="timestamp">The timestamp to add.</param>
         /// <returns>This RPC.</returns>
@@ -96,7 +102,7 @@ namespace DiscordIntegration.Entities.Rpc
         }
 
         /// <summary>
-        ///     Adds a large image to this RPC.
+        ///     Adds large image information to this RPC.
         /// </summary>
         /// <param name="largeImage">The large image to add.</param>
         /// <returns>This RPC.</returns>
@@ -107,7 +113,7 @@ namespace DiscordIntegration.Entities.Rpc
         }
 
         /// <summary>
-        ///     Adds a small image to this RPC.
+        ///     Adds small image information to this RPC.
         /// </summary>
         /// <param name="smallImage">The small image to add.</param>
         /// <returns>This RPC.</returns>
@@ -117,18 +123,31 @@ namespace DiscordIntegration.Entities.Rpc
             return this;
         }
 
+        /// <summary>
+        ///     Adds party information to this RPC.
+        /// </summary>
+        /// <param name="party">The party to add.</param>
+        /// <returns>This RPC.</returns>
         public RichPresence WithParty(RichPresenceParty party)
         {
             Party = party;
             return this;
         }
 
-        public RichPresence AddJoinButton()
+        /// <summary>
+        ///     Adds a join button to this RPC.
+        /// </summary>
+        /// <returns>This RPC.</returns>
+        public RichPresence WithJoinButton()
         {
             JoinSecret = Guid.NewGuid().ToString();
             return this;
         }
         
+        /// <summary>
+        ///     Makes the match in progress.
+        /// </summary>
+        /// <returns>This RPC.</returns>
         public RichPresence AsInProgress()
         {
             InProgress = true;

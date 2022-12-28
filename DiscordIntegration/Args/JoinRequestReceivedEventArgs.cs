@@ -22,8 +22,18 @@
 
 namespace DiscordIntegration.Args
 {
+    /// <summary>
+    ///     The event arguments for the <see cref="RpcClient.JoinRequestReceived"/> event.
+    /// </summary>
     public class JoinRequestReceivedEventArgs
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="JoinRequestReceivedEventArgs"/> class.
+        /// </summary>
+        /// <param name="userId">The user's <see href="https://en.wikipedia.org/wiki/Snowflake_ID">Snowflake ID</see>.</param>
+        /// <param name="username">The user's username.</param>
+        /// <param name="discriminator">The user's discriminator; the 4 digit number that comes after their username.</param>
+        /// <param name="avatarUrl">The user's avatar URL.</param>
         internal JoinRequestReceivedEventArgs(ulong userId, string username, int discriminator, string avatarUrl)
         {
             UserId = userId;
@@ -32,12 +42,24 @@ namespace DiscordIntegration.Args
             AvatarUrl = avatarUrl;
         }
 
+        /// <summary>
+        ///     Gets the user's <see href="https://en.wikipedia.org/wiki/Snowflake_ID">Snowflake ID</see>.
+        /// </summary>
         public ulong UserId { get; }
 
+        /// <summary>
+        ///     Gets the user's username.
+        /// </summary>
         public string Username { get; }
 
+        /// <summary>
+        ///     Gets the user's discriminator; the 4 digit number that comes after their username.
+        /// </summary>
         public int Discriminator { get; }
 
+        /// <summary>
+        ///     Gets the user's avatar URL.
+        /// </summary>
         public string AvatarUrl { get; }
     }
 }

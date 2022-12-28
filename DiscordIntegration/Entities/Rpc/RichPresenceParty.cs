@@ -22,16 +22,30 @@
 
 namespace DiscordIntegration.Entities.Rpc
 {
+    /// <summary>
+    ///     Party information for <see cref="RichPresence"/> objects.
+    /// </summary>
     public sealed class RichPresenceParty
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RichPresenceParty"/> class.
+        /// </summary>
+        /// <param name="currentSize">The current size of the party.</param>
+        /// <param name="maxSize">The maximum size of the party.</param>
         public RichPresenceParty(int currentSize, int maxSize)
         {
             CurrentSize = currentSize;
             MaxSize = maxSize;
         }
 
+        /// <summary>
+        ///     Gets or sets the current size of the party.
+        /// </summary>
         public int CurrentSize { get; set; }
-        
+
+        /// <summary>
+        ///     Gets or sets the maximum size of the party.
+        /// </summary>
         public int MaxSize { get; set; }
 
         internal string Id { get; set; } = Guid.NewGuid().ToString();
