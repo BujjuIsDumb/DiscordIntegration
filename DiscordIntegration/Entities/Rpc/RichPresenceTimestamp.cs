@@ -34,7 +34,7 @@ namespace DiscordIntegration.Entities.Rpc
         /// <param name="displayType">The display type.</param>
         public RichPresenceTimestamp(DateTime timestamnp, TimestampDisplayType displayType)
         {
-            if (displayType == TimestampDisplayType.Remaining)
+            if (displayType == TimestampDisplayType.Left)
             {
                 End = timestamnp;
             }
