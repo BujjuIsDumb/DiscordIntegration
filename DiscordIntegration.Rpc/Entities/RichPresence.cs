@@ -115,23 +115,31 @@ namespace DiscordIntegration.Rpc.Entities
         /// <returns>This RPC as an <see cref="Activity"/></returns>
         internal Activity ToActivity()
         {
-            return new Activity
+            var activity = new Activity
             {
                 State = State,
-                Details = Details,
-                Timestamps =
-                {
-                    Start = ((DateTimeOffset)Timestamp?.Start).ToUnixTimeSeconds(),
-                    End = ((DateTimeOffset)Timestamp?.End).ToUnixTimeSeconds()
-                },
-                Assets =
-                {
-                    LargeImage = LargeImage?.ImageKey,
-                    LargeText = LargeImage?.Tooltip,
-                    SmallImage = SmallImage?.ImageKey,
-                    SmallText = SmallImage?.Tooltip
-                }
+                Details = Details
             };
+
+            if (Timestamp != null)
+            {
+                activity.Timestamps.Start = ((DateTimeOffset)Timestamp.Start).ToUnixTimeSeconds();
+                activity.Timestamps.End = ((DateTimeOffset)Timestamp.End).ToUnixTimeSeconds();
+            }
+
+            if (LargeImage != null)
+            {
+                activity.Assets.SmallImage = SmallImage.ImageKey;
+                activity.Assets.SmallText = SmallImage.Tooltip;
+            }
+
+            if (SmallImage != null)
+            {
+                activity.Assets.SmallImage = SmallImage.ImageKey;
+                activity.Assets.SmallText = SmallImage.Tooltip;
+            }
+
+            return activity;
         }
     }
 }
