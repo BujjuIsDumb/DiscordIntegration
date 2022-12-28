@@ -88,11 +88,10 @@ namespace DiscordIntegration.Rpc
         ///     Updates the Rich Presence.
         /// </summary>
         /// <param name="rpc">The RPC to use.</param>
-        /// <returns>A task that represents the asynchronous operation.</returns>
         /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
         /// <exception cref="Exception">Thrown when the client hasn't been started yet.</exception>
         /// <exception cref="RpcFailedException">Thrown when Discord returns an error.</exception>
-        public async Task UpdateAsync(RichPresence rpc)
+        public void Update(RichPresence rpc)
         {
             if (_isDisposed)
                 throw new ObjectDisposedException(nameof(WebhookClient));
