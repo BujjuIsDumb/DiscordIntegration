@@ -45,7 +45,7 @@ namespace DiscordIntegration.Rpc
         {
             if (!File.Exists(".\\discord_game_sdk.dll"))
             {
-                throw new FileNotFoundException("The Discord Game SDK was not found. Please make sure it is in the same directory as the executable, with the name \"discord_game_sdk.dll\". You can download it here: https://discord.com/developers/docs/game-sdk/sdk-starter-guide");
+                throw new FileNotFoundException("The Discord Game SDK was not found. Please make sure it is in the same directory as the executable, with the name \'discord_game_sdk.dll\'.");
             }
 
             _client = new Discord((long)appId, (ulong)CreateFlags.NoRequireDiscord);
