@@ -168,9 +168,13 @@ namespace DiscordIntegration.Entities.Rpc
                 }
             };
 
-            if (Timestamp != null)
+            if (Timestamp?.Start != null)
             {
                 activity.Timestamps.Start = ((DateTimeOffset)Timestamp.Start).ToUnixTimeSeconds();
+            }
+            
+            if (Timestamp?.End != null)
+            {
                 activity.Timestamps.End = ((DateTimeOffset)Timestamp.End).ToUnixTimeSeconds();
             }
 

@@ -30,22 +30,46 @@ namespace DiscordIntegration.Entities.Rpc
         /// <summary>
         ///     Initializes a new instance of the <see cref="RichPresenceTimestamp"/> class.
         /// </summary>
-        /// <param name="start">The start of the timestamp.</param>
-        /// <param name="end">The end of the timestamp.</param>
-        public RichPresenceTimestamp(DateTime start, DateTime end)
+        /// <param name="timestamnp">The time to display.</param>
+        /// <param name="displayType">The display type.</param>
+        public RichPresenceTimestamp(DateTime timestamnp, TimestampDisplayType displayType)
         {
-            Start = start;
-            End = end;
+            if (displayType == TimestampDisplayType.Remaining)
+            {
+                End = timestamnp;
+            }
+            else if (displayType == TimestampDisplayType.Elapsed)
+            {
+                Start = timestamnp;
+            }
         }
 
         /// <summary>
         ///     Gets or sets the start of the timestamp.
         /// </summary>
-        public DateTime Start { get; set; }
+        public DateTime? Start { get; set; }
 
         /// <summary>
         ///     Gets or sets the end of the timestamp.
         /// </summary>
-        public DateTime End { get; set; }
+        public DateTime? End { get; set; }
+
+        /// <summary>
+        ///     The types of timestamps that can be displayed.
+        /// </summary>
+        public enum TimestampDisplayType
+        {
+            /// <summary>
+            ///     Defines that this timestamp should be displayed as a "left" timestamp. The timestamp should be greater than the current time.
+            ///     <para>00:00 left</para>
+            /// </summary>
+            Left = 0,
+
+            /// <summary>
+            ///     Defines that this timestamp should be displayed as a "elapsed" timestamp. The timestamp should be less than the current time.
+            ///     <para>00:00 elapsed</para>
+            /// </summary>
+            Elapsed = 1
+        }
     }
 }
