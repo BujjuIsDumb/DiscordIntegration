@@ -29,10 +29,7 @@ namespace DiscordIntegration.Exceptions
     /// </summary>
     public class RpcFailedException : Exception
     {
-        /// <summary>
-        ///     A dictionary containing descriptions for <see cref="Result"/> values from <see href="https://discord.com/developers/docs/game-sdk/discord#data-models-result-enum">here</see>.
-        /// </summary>
-        private Dictionary<Result, string> ResultDescriptions => new()
+        private static Dictionary<Result, string> ResultDescriptions => new()
         {
             [Result.ServiceUnavailable] = "Discord isn't working",
             [Result.InvalidVersion] = "the SDK version may be outdated",
@@ -79,10 +76,6 @@ namespace DiscordIntegration.Exceptions
             [Result.TransactionAborted] = "purchase flow aborted because the SDK is being torn down"
         };
         
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RpcFailedException"/> class.
-        /// </summary>
-        /// <param name="result">The result that caused the exception.</param>
         internal RpcFailedException(Result result) : base($"{(int)result} ({result}) {ResultDescriptions[result]}")
         {
             ErrorCode = (int)result;

@@ -29,10 +29,6 @@ namespace DiscordIntegration.Exceptions
     /// </summary>
     public class BadRequestException : Exception
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="BadRequestException"/> class.
-        /// </summary>
-        /// <param name="response">The response that caused the exception.</param>
         internal BadRequestException(HttpResponseMessage response)
             : base($"The request to the Discord API failed with status code {(int)response.StatusCode} ({response.StatusCode}).") => Response = response;
 

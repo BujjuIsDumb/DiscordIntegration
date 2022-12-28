@@ -35,9 +35,6 @@ namespace DiscordIntegration
     /// </summary>
     public class WebhookClient : IDisposable
     {
-        /// <summary>
-        ///     The <see cref="HttpClient"/> used to send REST requests.
-        /// </summary>
         private HttpClient _client;
 
         /// <summary>
@@ -258,51 +255,26 @@ namespace DiscordIntegration
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        ///     Represents the <see href="https://discord.com/developers/docs/resources/webhook#execute-webhook">Execute Webhook</see> payload.
-        /// </summary>
         private class Payload
         {
-            /// <summary>
-            ///     Gets or sets the message content.
-            /// </summary>
             [JsonPropertyName("content")]
             public string Content { get; set; }
 
-            /// <summary>
-            ///     Gets or sets the username override.
-            /// </summary>
             [JsonPropertyName("username")]
             public string Username { get; set; }
 
-            /// <summary>
-            ///     Gets or sets the avatar URL override.
-            /// </summary>
             [JsonPropertyName("avatar_url")]
             public string AvatarUrl { get; set; }
-
-            /// <summary>
-            ///     Gets or sets whether the message should be sent as a text-to-speech message.
-            /// </summary>
+            
             [JsonPropertyName("tts")]
             public bool Tts { get; set; }
 
-            /// <summary>
-            ///     Gets or sets the embeds of the message.
-            /// </summary>
             [JsonPropertyName("embeds")]
             public Embed[] Embeds { get; set; }
 
-            /// <summary>
-            ///     Gets or sets the attachments of the message.
-            /// </summary>
             [JsonPropertyName("attachments")]
             public WebhookAttachment[] Attachments { get; set; }
 
-            /// <summary>
-            ///     Checks if the payload is valid.
-            /// </summary>
-            /// <exception cref="ArgumentException">Thrown if the payload is invalid.</exception>
             public void Validate()
             {
                 if (Content?.Length > 2000)

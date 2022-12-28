@@ -31,14 +31,8 @@ namespace DiscordIntegration.Rpc
     /// </summary>
     public class RpcClient : IDisposable
     {
-        /// <summary>
-        ///     The Discord client used to create the RPC.
-        /// </summary>
         private Discord _client;
 
-        /// <summary>
-        ///     Whether the callbacks have been started.
-        /// </summary>
         private bool _started;
 
         /// <summary>
@@ -47,7 +41,8 @@ namespace DiscordIntegration.Rpc
         /// <param name="appId">The application ID/client ID from the <see cref="https://discord.com/developers">Discord Developer Portal</see></param>
         /// <param name="rpc">The Rich Presence to use.</param>
         public RpcClient(ulong appId)
-        {   
+        {
+            // Check if the Discord SDK is downloaded.
             if (!File.Exists(".\\discord_game_sdk.dll"))
                 throw new FileNotFoundException("The Discord Game SDK was not found. Please make sure it is in the same directory as the executable, with the name \'discord_game_sdk.dll\'.");
 
@@ -63,6 +58,7 @@ namespace DiscordIntegration.Rpc
         /// <exception cref="RpcFailedException">Thrown when Discord returns an error.</exception>
         public async Task StartAsync(RichPresence rpc)
         {
+            // Check if the client has already been started.
             if (_started)
                 throw new Exception("This client has already been started.");
 
@@ -74,6 +70,7 @@ namespace DiscordIntegration.Rpc
 
             _started = true;
 
+            // Start running callbacks.
             while (true)
             {
                 _client.RunCallbacks();
@@ -83,6 +80,7 @@ namespace DiscordIntegration.Rpc
 
         public void Dispose()
         {
+            // Clear the RPC if it has been started.
             if (_started)
             {
                 _client.GetActivityManager().ClearActivity(result =>

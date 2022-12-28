@@ -109,10 +109,6 @@ namespace DiscordIntegration.Entities.Rpc
             return this;
         }
         
-        /// <summary>
-        ///     Converts this RPC to an <see cref="Activity"/>.
-        /// </summary>
-        /// <returns>This RPC as an <see cref="Activity"/></returns>
         internal Activity ToActivity()
         {
             var activity = new Activity
