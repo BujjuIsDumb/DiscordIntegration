@@ -43,6 +43,11 @@ namespace DiscordIntegration.Rpc
         /// <param name="rpc">The Rich Presence to use.</param>
         public RpcClient(ulong appId, RichPresence rpc)
         {
+            if (!File.Exists(".\\discord_game_sdk.dll"))
+            {
+                throw new FileNotFoundException("The Discord Game SDK was not found. Please make sure it is in the same directory as the executable, with the name \"discord_game_sdk.dll\". You can download it here: https://discord.com/developers/docs/game-sdk/sdk-starter-guide");
+            }
+
             _client = new Discord((long)appId, (ulong)CreateFlags.NoRequireDiscord);
             Rpc = rpc;
         }
