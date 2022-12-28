@@ -24,7 +24,7 @@ using DiscordIntegration.Entities.Rpc;
 using DiscordIntegration.Exceptions;
 using DiscordIntegration.SdkWrapper;
 
-namespace DiscordIntegration.Rpc
+namespace DiscordIntegration
 {
     /// <summary>
     ///     A client for the Discord RPC.
