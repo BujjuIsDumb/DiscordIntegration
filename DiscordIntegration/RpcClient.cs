@@ -35,6 +35,8 @@ namespace DiscordIntegration.Rpc
 
         private bool _started;
 
+        private bool _isDisposed;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="RpcClient"/> class.
         /// </summary>
@@ -54,10 +56,14 @@ namespace DiscordIntegration.Rpc
         /// </summary>
         /// <param name="rpc">The RPC to use.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
         /// <exception cref="Exception">Thrown when the client has already been started.</exception>
         /// <exception cref="RpcFailedException">Thrown when Discord returns an error.</exception>
         public async Task StartAsync(RichPresence rpc)
         {
+            if (_isDisposed)
+                throw new ObjectDisposedException(nameof(WebhookClient));
+
             // Check if the client has already been started.
             if (_started)
                 throw new Exception("This client has already been started.");
@@ -92,6 +98,9 @@ namespace DiscordIntegration.Rpc
 
             _client.Dispose();
             GC.SuppressFinalize(this);
+
+            _started = false;
+            _isDisposed = true;
         }
     }
 }

@@ -37,6 +37,8 @@ namespace DiscordIntegration
     {
         private HttpClient _client;
 
+        private bool _isDisposed;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="WebhookClient"/> class.
         /// </summary>
@@ -55,6 +57,9 @@ namespace DiscordIntegration
             get => _client.BaseAddress.ToString();
             set
             {
+                if (_isDisposed)
+                    throw new ObjectDisposedException(nameof(WebhookClient));
+
                 // Check if the URL is valid.
                 if (!Regex.IsMatch(value, @"https:\/\/discord\.com\/api\/(v\d+\/)?webhooks\/\d{17,19}\/.{68}"))
                     throw new Exception("Please provide a valid webhook URL.");
@@ -69,9 +74,13 @@ namespace DiscordIntegration
         /// <param name="message">The message to send.</param>
         /// <param name="profile">The webhook profile override to use.</param>
         /// <returns>The message that was sent.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
         /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
         public async Task<ulong> ExecuteAsync(WebhookMessage message, WebhookProfile profile = null)
         {
+            if (_isDisposed)
+                throw new ObjectDisposedException(nameof(WebhookClient));
+
             var payload = new Payload()
             {
                 Content = message.Content,
@@ -109,10 +118,14 @@ namespace DiscordIntegration
         /// <param name="attachment">The attachment to send.</param>
         /// <param name="profile">The webhook profile override to use.</param>
         /// <returns>The message that was sent.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="attachment"/> isn't a png, jpg, or gif file.</exception>
         /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
         public async Task<ulong> ExecuteAsync(WebhookMessage message, WebhookAttachment attachment, WebhookProfile profile = null)
         {
+            if (_isDisposed)
+                throw new ObjectDisposedException(nameof(WebhookClient));
+
             // Check if the attachment is a png, jpg, or gif file.
             if (Path.GetExtension(attachment.FileName) != ".jpg" && Path.GetExtension(attachment.FileName) != ".jpeg" && Path.GetExtension(attachment.FileName) != ".gif" && Path.GetExtension(attachment.FileName) != ".png")
                 throw new ArgumentException("Attachment must be a PNG, JPG, or GIF file.", nameof(attachment));
@@ -164,9 +177,13 @@ namespace DiscordIntegration
         /// <param name="messageId">The Id of then message to edit.</param>
         /// <param name="newMessage">The new message to send.</param>
         /// <returns>The edited message.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
         /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
         public async Task EditMessageAsync(ulong messageId, WebhookMessage newMessage)
         {
+            if (_isDisposed)
+                throw new ObjectDisposedException(nameof(WebhookClient));
+
             var payload = new Payload()
             {
                 Content = newMessage.Content,
@@ -193,9 +210,13 @@ namespace DiscordIntegration
         /// <param name="messageId">The Id of then message to edit.</param>
         /// <param name="newMessage">The new message to send.</param>
         /// <returns>The edited message.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
         /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
         public async Task EditMessageAsync(ulong messageId, WebhookMessage newMessage, WebhookAttachment attachment)
         {
+            if (_isDisposed)
+                throw new ObjectDisposedException(nameof(WebhookClient));
+
             if (Path.GetExtension(attachment.FileName) != ".jpg" && Path.GetExtension(attachment.FileName) != ".jpeg" && Path.GetExtension(attachment.FileName) != ".gif" && Path.GetExtension(attachment.FileName) != ".png")
                 throw new ArgumentException("Attachment must be a PNG, JPG, or GIF file.", nameof(attachment));
 
@@ -235,9 +256,13 @@ namespace DiscordIntegration
         /// </summary>
         /// <param name="messageId">The ID of the message to delete.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
         /// <exception cref="BadRequestException">Thrown when the request to the Discord API fails.</exception>
         public async Task DeleteMessageAsync(ulong messageId)
         {
+            if (_isDisposed)
+                throw new ObjectDisposedException(nameof(WebhookClient));
+            
             // Send the request.
             var response = await _client.SendAsync(new HttpRequestMessage()
             {
@@ -253,6 +278,8 @@ namespace DiscordIntegration
         {
             _client.Dispose();
             GC.SuppressFinalize(this);
+
+            _isDisposed = true;
         }
 
         private class Payload
