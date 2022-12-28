@@ -1,10 +1,9 @@
 // This is a slightly modified version of the Discord Game SDK.
 // More info: https://discord.com/developers/docs/game-sdk/sdk-starter-guide
 
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
-using DiscordIntegration.Rpc.Entities;
+using DiscordIntegration.Entities.Rpc;
 
 namespace DiscordIntegration.SdkWrapper
 {
