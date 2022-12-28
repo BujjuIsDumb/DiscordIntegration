@@ -54,6 +54,8 @@ namespace DiscordIntegration.Entities.Rpc
         /// </summary>
         public RichPresenceMedia SmallImage { get; set; }
 
+        public RichPresenceParty Party { get; set; }
+
         /// <summary>
         ///     Adds a state to this RPC.
         /// </summary>
@@ -108,7 +110,13 @@ namespace DiscordIntegration.Entities.Rpc
             SmallImage = smallImage;
             return this;
         }
-        
+
+        public RichPresence WithParty(RichPresenceParty party)
+        {
+            Party = party;
+            return this;
+        }
+
         internal Activity ToActivity()
         {
             var activity = new Activity
@@ -133,6 +141,13 @@ namespace DiscordIntegration.Entities.Rpc
             {
                 activity.Assets.SmallImage = SmallImage.ImageKey;
                 activity.Assets.SmallText = SmallImage.Tooltip;
+            }
+
+            if (Party != null)
+            {
+                activity.Party.Id = Party.Id;
+                activity.Party.Size.CurrentSize = Party.CurrentSize;
+                activity.Party.Size.MaxSize = Party.MaxSize;
             }
 
             return activity;

@@ -355,11 +355,12 @@ namespace DiscordIntegration.SdkWrapper
                     End = DateTimeOffset.FromUnixTimeSeconds(Timestamps.End).DateTime
                 },
                 LargeImage = new RichPresenceMedia(Assets.LargeImage, Assets.LargeText),
-                SmallImage = new RichPresenceMedia(Assets.SmallImage, Assets.SmallText)
+                SmallImage = new RichPresenceMedia(Assets.SmallImage, Assets.SmallText),
+                Party = new RichPresenceParty(Party.Size.CurrentSize, Party.Size.MaxSize) { Id = Party.Id }
             };
+        }
     }
-}
-
+    
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     internal partial struct Presence
     {
