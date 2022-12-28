@@ -37,63 +37,61 @@ namespace DiscordIntegration.Rpc
         private Discord _client;
 
         /// <summary>
-        ///     Whether the previous request has been completed.
+        ///     Whether the callbacks have been started.
         /// </summary>
-        private bool _isReady;
+        private bool _started;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RpcClient"/> class.
         /// </summary>
         /// <param name="appId">The application ID/client ID from the <see cref="https://discord.com/developers">Discord Developer Portal</see></param>
         /// <param name="rpc">The Rich Presence to use.</param>
-        public RpcClient(ulong appId, RichPresence rpc)
-        {
+        public RpcClient(ulong appId)
+        {   
             if (!File.Exists(".\\discord_game_sdk.dll"))
                 throw new FileNotFoundException("The Discord Game SDK was not found. Please make sure it is in the same directory as the executable, with the name \'discord_game_sdk.dll\'.");
 
-            _isReady = true;
-
             _client = new Discord((long)appId, (ulong)CreateFlags.NoRequireDiscord);
-            Rpc = rpc;
         }
 
         /// <summary>
-        ///     Sets the Rich Presence.
+        ///     Starts this RPC client.
         /// </summary>
-        public RichPresence Rpc
+        /// <param name="rpc">The RPC to use.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="Exception">Thrown when the client has already been started.</exception>
+        /// <exception cref="RpcFailedException">Thrown when Discord returns an error.</exception>
+        public async Task StartAsync(RichPresence rpc)
         {
-            set
+            if (_started)
+                throw new Exception("This client has already been started.");
+
+            _client.GetActivityManager().UpdateActivity(rpc.ToActivity(), result =>
             {
-                if (!_isReady)
-                    throw new Exception("The previous request is still in progress");
-                
-                _client.GetActivityManager().UpdateActivity(value.ToActivity(), result =>
-                {
-                    _isReady = false;
+                if (result != Result.Ok)
+                    throw new RpcFailedException(result);
+            });
 
-                    if (result != Result.Ok)
-                        throw new RpcFailedException(result);
+            _started = true;
 
-                    _isReady = true;
-                });
+            while (true)
+            {
+                _client.RunCallbacks();
+                await Task.Delay(1000 / 60);
             }
         }
 
         public void Dispose()
         {
-            if (!_isReady)
-                throw new Exception("The previous request is still in progress");
-
-            _client.GetActivityManager().ClearActivity(result =>
+            if (_started)
             {
-                _isReady = false;
+                _client.GetActivityManager().ClearActivity(result =>
+                {
+                    if (result != Result.Ok)
+                        throw new RpcFailedException(result);
+                });
+            }
 
-                if (result != Result.Ok)
-                    throw new RpcFailedException(result);
-
-                _isReady = true;
-            });
-            
             _client.Dispose();
             GC.SuppressFinalize(this);
         }
