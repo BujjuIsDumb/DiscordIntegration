@@ -220,7 +220,7 @@ namespace DiscordIntegration.Entities.Embeds
         /// </summary>
         /// <param name="fields">The fields to add.</param>
         /// <returns>This embed.</returns>
-        public Embed AddField(IEnumerable<EmbedField> fields)
+        public Embed AddFields(IEnumerable<EmbedField> fields)
         {
             Fields ??= new List<EmbedField>();
 
