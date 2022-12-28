@@ -69,7 +69,12 @@ namespace DiscordIntegration.Rpc
 
         public void Dispose()
         {
-            _client.GetActivityManager().ClearActivity(null);
+            _client.GetActivityManager().ClearActivity(result =>
+            {
+                if (result != Result.Ok)
+                    throw new RpcFailedException(result);
+            });
+            
             _client.Dispose();
             GC.SuppressFinalize(this);
         }
