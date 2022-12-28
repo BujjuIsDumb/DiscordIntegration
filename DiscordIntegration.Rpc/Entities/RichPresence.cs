@@ -24,48 +24,95 @@ using DiscordIntegration.Rpc.SdkWrapper;
 
 namespace DiscordIntegration.Rpc.Entities
 {
+    /// <summary>
+    ///     Represents a rich presence object.
+    /// </summary>
     public sealed class RichPresence
     {
+        /// <summary>
+        ///     Gets or sets the state of this rich presence.
+        /// </summary>
         public string State { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the details of this rich presence.
+        /// </summary>
         public string Details { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the timestamp of this rich presence.
+        /// </summary>
         public RichPresenceTimestamp Timestamp { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the large image of this rich presence.
+        /// </summary>
         public RichPresenceMedia LargeImage { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the small image of this rich presence.
+        /// </summary>
         public RichPresenceMedia SmallImage { get; set; }
 
+        /// <summary>
+        ///     Adds a state to this RPC.
+        /// </summary>
+        /// <param name="state">The state to add.</param>
+        /// <returns>This RPC.</returns>
         public RichPresence WithState(string state)
         {
             State = state;
             return this;
         }
 
+        /// <summary>
+        ///     Adds details to this RPC.
+        /// </summary>
+        /// <param name="details">The details to add.</param>
+        /// <returns>This RPC.</returns>
         public RichPresence WithDetails(string details)
         {
             Details = details;
             return this;
         }
 
+        /// <summary>
+        ///     Adds a timestamp to this RPC.
+        /// </summary>
+        /// <param name="timestamp">The timestamp to add.</param>
+        /// <returns>This RPC.</returns>
         public RichPresence WithTimestamp(RichPresenceTimestamp timestamp)
         {
             Timestamp = timestamp;
             return this;
         }
 
+        /// <summary>
+        ///     Adds a large image to this RPC.
+        /// </summary>
+        /// <param name="largeImage">The large image to add.</param>
+        /// <returns>This RPC.</returns>
         public RichPresence WithLargeImage(RichPresenceMedia largeImage)
         {
             LargeImage = largeImage;
             return this;
         }
 
+        /// <summary>
+        ///     Adds a small image to this RPC.
+        /// </summary>
+        /// <param name="smallImage">The small image to add.</param>
+        /// <returns>This RPC.</returns>
         public RichPresence WithSmallImage(RichPresenceMedia smallImage)
         {
             SmallImage = smallImage;
             return this;
         }
-
+        
+        /// <summary>
+        ///     Converts this RPC to an <see cref="Activity"/>.
+        /// </summary>
+        /// <returns>This RPC as an <see cref="Activity"/></returns>
         internal Activity ToActivity()
         {
             return new Activity

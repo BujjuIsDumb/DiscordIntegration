@@ -22,16 +22,30 @@
 
 namespace DiscordIntegration.Rpc.Entities
 {
+    /// <summary>
+    ///     Media information for <see cref="RichPresence"/> objects.
+    /// </summary>
     public sealed class RichPresenceMedia
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RichPresenceMedia"/> class.
+        /// </summary>
+        /// <param name="imageKey">The image key from the <see cref="https://discord.com/developers">Discord Developer Portal</see></param>
+        /// <param name="tooltip">The image tooltip.</param>
         public RichPresenceMedia(string imageKey, string tooltip)
         {
             ImageKey = imageKey;
             Tooltip = tooltip;
         }
 
+        /// <summary>
+        ///     Gets or sets the image key from the <see cref="https://discord.com/developers">Discord Developer Portal</see>
+        /// </summary>
         public string ImageKey { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the image tooltip.
+        /// </summary>
         public string Tooltip { get; set; }
     }
 }

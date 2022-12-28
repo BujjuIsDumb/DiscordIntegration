@@ -24,8 +24,15 @@ using DiscordIntegration.Rpc.SdkWrapper;
 
 namespace DiscordIntegration.Rpc.Exceptions
 {
+    /// <summary>
+    ///     An exception that is thrown when a Discord RPC call fails.
+    /// </summary>
     public class RpcFailedException : Exception
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RpcFailedException"/> class.
+        /// </summary>
+        /// <param name="result">The result that caused the exception.</param>
         internal RpcFailedException(Result result) : base($"{(int)result} - {result}")
         {
         }

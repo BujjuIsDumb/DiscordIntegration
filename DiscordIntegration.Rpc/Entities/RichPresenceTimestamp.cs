@@ -22,16 +22,30 @@
 
 namespace DiscordIntegration.Rpc.Entities
 {
+    /// <summary>
+    ///     Timestamp information for <see cref="RichPresence"/> objects.
+    /// </summary>
     public sealed class RichPresenceTimestamp
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RichPresenceTimestamp"/> class.
+        /// </summary>
+        /// <param name="start">The start of the timestamp.</param>
+        /// <param name="end">The end of the timestamp.</param>
         public RichPresenceTimestamp(DateTime start, DateTime end)
         {
             Start = start;
             End = end;
         }
 
+        /// <summary>
+        ///     Gets or sets the start of the timestamp.
+        /// </summary>
         public DateTime Start { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the end of the timestamp.
+        /// </summary>
         public DateTime End { get; set; }
     }
 }

@@ -26,16 +26,30 @@ using DiscordIntegration.Rpc.SdkWrapper;
 
 namespace DiscordIntegration.Rpc
 {
+    /// <summary>
+    ///     A client for the Discord RPC.
+    /// </summary>
     public class RpcClient : IDisposable
     {
+        /// <summary>
+        ///     The Discord client used to create the RPC.
+        /// </summary>
         private Discord _client;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RpcClient"/> class.
+        /// </summary>
+        /// <param name="appId">The application ID/client ID from the <see cref="https://discord.com/developers">Discord Developer Portal</see></param>
+        /// <param name="rpc">The Rich Presence to use.</param>
         public RpcClient(ulong appId, RichPresence rpc)
         {
             _client = new Discord((long)appId, (ulong)CreateFlags.NoRequireDiscord);
             Rpc = rpc;
         }
 
+        /// <summary>
+        ///     Sets the Rich Presence.
+        /// </summary>
         public RichPresence Rpc
         {
             set
