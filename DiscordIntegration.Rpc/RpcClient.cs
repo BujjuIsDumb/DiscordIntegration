@@ -37,6 +37,11 @@ namespace DiscordIntegration.Rpc
         private Discord _client;
 
         /// <summary>
+        ///     Whether the previous request has been completed.
+        /// </summary>
+        private bool _isReady;
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="RpcClient"/> class.
         /// </summary>
         /// <param name="appId">The application ID/client ID from the <see cref="https://discord.com/developers">Discord Developer Portal</see></param>
@@ -44,9 +49,9 @@ namespace DiscordIntegration.Rpc
         public RpcClient(ulong appId, RichPresence rpc)
         {
             if (!File.Exists(".\\discord_game_sdk.dll"))
-            {
                 throw new FileNotFoundException("The Discord Game SDK was not found. Please make sure it is in the same directory as the executable, with the name \'discord_game_sdk.dll\'.");
-            }
+
+            _isReady = true;
 
             _client = new Discord((long)appId, (ulong)CreateFlags.NoRequireDiscord);
             Rpc = rpc;
@@ -59,20 +64,34 @@ namespace DiscordIntegration.Rpc
         {
             set
             {
+                if (!_isReady)
+                    throw new Exception("The previous request is still in progress");
+                
                 _client.GetActivityManager().UpdateActivity(value.ToActivity(), result =>
                 {
+                    _isReady = false;
+
                     if (result != Result.Ok)
                         throw new RpcFailedException(result);
+
+                    _isReady = true;
                 });
             }
         }
 
         public void Dispose()
         {
+            if (!_isReady)
+                throw new Exception("The previous request is still in progress");
+
             _client.GetActivityManager().ClearActivity(result =>
             {
+                _isReady = false;
+
                 if (result != Result.Ok)
                     throw new RpcFailedException(result);
+
+                _isReady = true;
             });
             
             _client.Dispose();
