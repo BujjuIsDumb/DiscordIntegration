@@ -356,7 +356,10 @@ namespace DiscordIntegration.SdkWrapper
                 },
                 LargeImage = new RichPresenceMedia(Assets.LargeImage, Assets.LargeText),
                 SmallImage = new RichPresenceMedia(Assets.SmallImage, Assets.SmallText),
-                Party = new RichPresenceParty(Party.Size.CurrentSize, Party.Size.MaxSize) { Id = Party.Id }
+                Party = new RichPresenceParty(Party.Size.CurrentSize, Party.Size.MaxSize) { Id = Party.Id },
+                InProgress = Instance,
+                MatchSecret = Secrets.Match,
+                JoinSecret = Secrets.Join
             };
         }
     }

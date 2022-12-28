@@ -56,6 +56,12 @@ namespace DiscordIntegration.Entities.Rpc
 
         public RichPresenceParty Party { get; set; }
 
+        public bool InProgress { get; set; }
+
+        internal string JoinSecret { get; set; }
+
+        internal string MatchSecret { get; set; } = Guid.NewGuid().ToString();
+
         /// <summary>
         ///     Adds a state to this RPC.
         /// </summary>
@@ -117,12 +123,30 @@ namespace DiscordIntegration.Entities.Rpc
             return this;
         }
 
+        public RichPresence AddJoinButton()
+        {
+            JoinSecret = Guid.NewGuid().ToString();
+            return this;
+        }
+        
+        public RichPresence AsInProgress()
+        {
+            InProgress = true;
+            return this;
+        }
+
         internal Activity ToActivity()
         {
             var activity = new Activity
             {
                 State = State,
-                Details = Details
+                Details = Details,
+                Instance = InProgress,
+                Secrets =
+                {
+                    Match = MatchSecret,
+                    Join = JoinSecret
+                }
             };
 
             if (Timestamp != null)
@@ -149,7 +173,7 @@ namespace DiscordIntegration.Entities.Rpc
                 activity.Party.Size.CurrentSize = Party.CurrentSize;
                 activity.Party.Size.MaxSize = Party.MaxSize;
             }
-
+            
             return activity;
         }
     }

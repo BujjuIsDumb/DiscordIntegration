@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using DiscordIntegration.Args;
 using DiscordIntegration.Entities.Rpc;
 using DiscordIntegration.Exceptions;
 using DiscordIntegration.SdkWrapper;
@@ -50,6 +51,9 @@ namespace DiscordIntegration
 
             try { _client = new Discord((long)appId, (ulong)CreateFlags.NoRequireDiscord); }
             catch (ResultException ex) { throw new RpcFailedException(ex.Result); }
+            
+            _client.GetActivityManager().OnActivityJoinRequest += (ref User user) => JoinRequestReceived?.Invoke(this, new JoinRequestReceivedEventArgs((ulong)user.Id, user.Username, int.Parse(user.Discriminator), user.Avatar));
+            _client.GetActivityManager().OnActivityJoin += (secret) => UserJoined?.Invoke(this, null);
         }
 
         /// <summary>
@@ -126,5 +130,9 @@ namespace DiscordIntegration
             _started = false;
             _isDisposed = true;
         }
+
+        public event EventHandler<JoinRequestReceivedEventArgs> JoinRequestReceived;
+
+        public event EventHandler UserJoined;
     }
 }

@@ -20,20 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-namespace DiscordIntegration.Entities.Rpc
+namespace DiscordIntegration.Args
 {
-    public sealed class RichPresenceParty
+    public class JoinRequestReceivedEventArgs
     {
-        public RichPresenceParty(int currentSize, int maxSize)
+        internal JoinRequestReceivedEventArgs(ulong userId, string username, int discriminator, string avatarUrl)
         {
-            CurrentSize = currentSize;
-            MaxSize = maxSize;
+            UserId = userId;
+            Username = username;
+            Discriminator = discriminator;
+            AvatarUrl = avatarUrl;
         }
 
-        public int CurrentSize { get; set; }
-        
-        public int MaxSize { get; set; }
+        public ulong UserId { get; }
 
-        internal string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Username { get; }
+
+        public int Discriminator { get; }
+
+        public string AvatarUrl { get; }
     }
 }
