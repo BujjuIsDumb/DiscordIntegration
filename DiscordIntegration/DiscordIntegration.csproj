@@ -15,7 +15,7 @@
     <Description>A library to help integrate Discord into .NET applications using webhooks and RPC.</Description>
     <Copyright>Copyright (c) 2022 Bujju</Copyright>
     <RepositoryUrl>https://github.com/BujjuIsDumb/DiscordIntegration</RepositoryUrl>
-    <PackageTags>discord, library, dotnet, webhooks, discord-webhooks, rpc, rich-presence, discord-rpc, discord-rich-presence</PackageTags>
+    <PackageTags>Webhooks, Discord Webhooks, Rich Presence, RPC, Discord Rich Presence, Discord RPC, Discord</PackageTags>
     <PackageIcon>icon.png</PackageIcon>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
