@@ -41,8 +41,8 @@ namespace DiscordIntegration
         ///     Initializes a new instance of the <see cref="RpcClient"/> class.
         /// </summary>
         /// <param name="appId">The application ID/client ID from the <see cref="https://discord.com/developers">Discord Developer Portal</see></param>
-        /// <param name="rpc">The Rich Presence to use.</param>
-        public RpcClient(ulong appId)
+        /// <param name="steamId">The Steam app id if your app is on steam..</param>
+        public RpcClient(ulong appId, uint? steamId = null)
         {
             // Check if the Discord SDK is downloaded.
             if (!File.Exists(".\\discord_game_sdk.dll"))
@@ -50,9 +50,14 @@ namespace DiscordIntegration
 
             try { _client = new InternalRpcClient((long)appId, (ulong)CreateFlags.NoRequireDiscord); }
             catch (ResultException ex) { throw new RpcFailedException(ex.Result); }
-            
-            _client.GetActivityManager().OnActivityJoinRequest += (ref User user) => JoinRequestReceived?.Invoke(this, new JoinRequestReceivedEventArgs((ulong)user.Id, user.Username, int.Parse(user.Discriminator), user.Avatar));
-            _client.GetActivityManager().OnActivityJoin += (secret) => UserJoined?.Invoke(this, null);
+
+            if (steamId != null)
+                _client.GetActivityManager().RegisterSteam(steamId.Value);
+
+            _client.GetActivityManager().OnActivityJoin += (secret) => Join?.Invoke(this, new JoinEventArgs());
+            _client.GetActivityManager().OnActivitySpectate += (secret) => Spectate?.Invoke(this, new SpectateEventArgs());
+            _client.GetActivityManager().OnActivityJoinRequest += (ref User user) => JoinRequest?.Invoke(this, new JoinRequestEventArgs((ulong)user.Id, user.Username, int.Parse(user.Discriminator), user.Avatar));
+            _client.GetActivityManager().OnActivityInvite += (ActivityActionType type, ref User user, ref Activity activity) => Invite?.Invoke(this, new InviteEventArgs((ulong)user.Id, user.Username, int.Parse(user.Discriminator), user.Avatar));
         }
 
         /// <summary>
@@ -131,14 +136,9 @@ namespace DiscordIntegration
             _isDisposed = true;
         }
 
-        /// <summary>
-        ///     An event fired when a user requests to join the game.
-        /// </summary>
-        public event EventHandler<JoinRequestReceivedEventArgs> JoinRequestReceived;
-
-        /// <summary>
-        ///     An event fired when a user joins the game.
-        /// </summary>
-        public event EventHandler UserJoined;
+        public event EventHandler<JoinEventArgs> Join;
+        public event EventHandler<SpectateEventArgs> Spectate;
+        public event EventHandler<JoinRequestEventArgs> JoinRequest;
+        public event EventHandler<InviteEventArgs> Invite;
     }
 }

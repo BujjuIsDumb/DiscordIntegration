@@ -22,37 +22,24 @@
 
 namespace DiscordIntegration.Args
 {
-    /// <summary>
-    ///     The event arguments for the <see cref="RpcClient.JoinRequestReceived"/> event.
-    /// </summary>
-    public class JoinRequestReceivedEventArgs
+    public class JoinRequestEventArgs : EventArgs
     {
-        internal JoinRequestReceivedEventArgs(ulong userId, string username, int discriminator, string avatarUrl)
+        internal JoinRequestEventArgs(ulong userId, string username, int discriminator, string avatarUrl)
         {
             UserId = userId;
             Username = username;
             Discriminator = discriminator;
             AvatarUrl = avatarUrl;
         }
-
-        /// <summary>
-        ///     Gets the user's <see href="https://en.wikipedia.org/wiki/Snowflake_ID">Snowflake ID</see>.
-        /// </summary>
+    
         public ulong UserId { get; }
 
-        /// <summary>
-        ///     Gets the user's username.
-        /// </summary>
         public string Username { get; }
 
-        /// <summary>
-        ///     Gets the user's discriminator; the 4 digit number that comes after their username.
-        /// </summary>
         public int Discriminator { get; }
 
-        /// <summary>
-        ///     Gets the user's avatar URL.
-        /// </summary>
         public string AvatarUrl { get; }
+
+        public DateTime Timestamp { get; } = DateTime.Now;
     }
 }

@@ -64,6 +64,8 @@ namespace DiscordIntegration.Entities.Rpc
 
         internal string JoinSecret { get; set; }
 
+        internal string SpectateSecret { get; set; }
+
         internal string MatchSecret { get; set; } = Guid.NewGuid().ToString();
 
         /// <summary>
@@ -133,6 +135,16 @@ namespace DiscordIntegration.Entities.Rpc
         }
 
         /// <summary>
+        ///     Makes the match in progress.
+        /// </summary>
+        /// <returns>This RPC.</returns>
+        public RichPresence AsInProgress()
+        {
+            InProgress = true;
+            return this;
+        }
+
+        /// <summary>
         ///     Adds a join button to this RPC.
         /// </summary>
         /// <returns>This RPC.</returns>
@@ -143,12 +155,12 @@ namespace DiscordIntegration.Entities.Rpc
         }
 
         /// <summary>
-        ///     Makes the match in progress.
+        ///     Adds a join button to this RPC.
         /// </summary>
         /// <returns>This RPC.</returns>
-        public RichPresence AsInProgress()
+        public RichPresence WithSpectateButton()
         {
-            InProgress = true;
+            SpectateSecret = Guid.NewGuid().ToString();
             return this;
         }
 
@@ -162,7 +174,8 @@ namespace DiscordIntegration.Entities.Rpc
                 Secrets =
                 {
                     Match = MatchSecret,
-                    Join = JoinSecret
+                    Join = JoinSecret,
+                    Spectate = SpectateSecret
                 }
             };
 
