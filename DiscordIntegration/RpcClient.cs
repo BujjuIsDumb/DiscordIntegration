@@ -82,7 +82,7 @@ namespace DiscordIntegration
             _started = true;
 
             // Start running callbacks.
-            while (true)
+            while (!_isDisposed)
             {
                 _client.RunCallbacks();
                 await Task.Delay(1000 / 60);
