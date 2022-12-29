@@ -122,45 +122,5 @@ namespace DiscordIntegration.Entities.Rpc
             Party = party;
             return this;
         }
-
-        internal Activity ToActivity()
-        {
-            var activity = new Activity
-            {
-                State = State,
-                Details = Details
-            };
-
-            if (Timestamp?.Start != null)
-            {
-                activity.Timestamps.Start = ((DateTimeOffset)Timestamp.Start).ToUnixTimeSeconds();
-            }
-
-            if (Timestamp?.End != null)
-            {
-                activity.Timestamps.End = ((DateTimeOffset)Timestamp.End).ToUnixTimeSeconds();
-            }
-
-            if (LargeImage != null)
-            {
-                activity.Assets.SmallImage = SmallImage.ImageKey;
-                activity.Assets.SmallText = SmallImage.Tooltip;
-            }
-
-            if (SmallImage != null)
-            {
-                activity.Assets.SmallImage = SmallImage.ImageKey;
-                activity.Assets.SmallText = SmallImage.Tooltip;
-            }
-
-            if (Party != null)
-            {
-                activity.Party.Id = Party.Id;
-                activity.Party.Size.CurrentSize = Party.CurrentSize;
-                activity.Party.Size.MaxSize = Party.MaxSize;
-            }
-
-            return activity;
-        }
     }
 }
