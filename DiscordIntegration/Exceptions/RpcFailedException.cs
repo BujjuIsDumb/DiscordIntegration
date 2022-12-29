@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using DiscordIntegration.SdkWrapper;
+using DiscordIntegration.Entities.Rpc;
 
 namespace DiscordIntegration.Exceptions
 {
@@ -28,7 +28,24 @@ namespace DiscordIntegration.Exceptions
     ///     An exception that is thrown when a Discord RPC call fails.
     /// </summary>
     public class RpcFailedException : Exception
-    {
+    {   
+        internal RpcFailedException(Result result) : base($"{(int)result} ({result}) {ResultDescriptions[result]}")
+        {
+            ErrorCode = (int)result;
+            ErrorMessage = $"{result}: {ResultDescriptions[result]}";
+        }
+
+        /// <summary>
+        ///     Gets the error code.
+        /// </summary>
+        public int ErrorCode { get; }
+
+        /// <summary>
+        ///     Gets the error message.
+        /// </summary>
+        public string ErrorMessage { get; }
+
+        #region Result Descriptions
         private static Dictionary<Result, string> ResultDescriptions => new()
         {
             [Result.ServiceUnavailable] = "Discord isn't working",
@@ -76,21 +93,6 @@ namespace DiscordIntegration.Exceptions
             [Result.TransactionAborted] = "purchase flow aborted because the SDK is being torn down",
             [Result.DrawingInitFailed] = "undocumented"
         };
-        
-        internal RpcFailedException(Result result) : base($"{(int)result} ({result}) {ResultDescriptions[result]}")
-        {
-            ErrorCode = (int)result;
-            ErrorMessage = $"{result}: {ResultDescriptions[result]}";
-        }
-
-        /// <summary>
-        ///     Gets the error code.
-        /// </summary>
-        public int ErrorCode { get; }
-
-        /// <summary>
-        ///     Gets the error message.
-        /// </summary>
-        public string ErrorMessage { get; }
+        #endregion
     }
 }

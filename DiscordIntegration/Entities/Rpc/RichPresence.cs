@@ -20,8 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using DiscordIntegration.SdkWrapper;
-
 namespace DiscordIntegration.Entities.Rpc
 {
     /// <summary>
@@ -143,7 +141,7 @@ namespace DiscordIntegration.Entities.Rpc
             JoinSecret = Guid.NewGuid().ToString();
             return this;
         }
-        
+
         /// <summary>
         ///     Makes the match in progress.
         /// </summary>
@@ -172,7 +170,7 @@ namespace DiscordIntegration.Entities.Rpc
             {
                 activity.Timestamps.Start = ((DateTimeOffset)Timestamp.Start).ToUnixTimeSeconds();
             }
-            
+
             if (Timestamp?.End != null)
             {
                 activity.Timestamps.End = ((DateTimeOffset)Timestamp.End).ToUnixTimeSeconds();
@@ -196,7 +194,7 @@ namespace DiscordIntegration.Entities.Rpc
                 activity.Party.Size.CurrentSize = Party.CurrentSize;
                 activity.Party.Size.MaxSize = Party.MaxSize;
             }
-            
+
             return activity;
         }
     }

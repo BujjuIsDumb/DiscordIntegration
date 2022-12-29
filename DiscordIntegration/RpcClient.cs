@@ -23,7 +23,6 @@
 using DiscordIntegration.Args;
 using DiscordIntegration.Entities.Rpc;
 using DiscordIntegration.Exceptions;
-using DiscordIntegration.SdkWrapper;
 
 namespace DiscordIntegration
 {
@@ -32,7 +31,7 @@ namespace DiscordIntegration
     /// </summary>
     public class RpcClient : IDisposable
     {
-        private Discord _client;
+        private InternalRpcClient _client;
 
         private bool _started;
 
@@ -49,7 +48,7 @@ namespace DiscordIntegration
             if (!File.Exists(".\\discord_game_sdk.dll"))
                 throw new FileNotFoundException("The Discord Game SDK was not found. Please make sure it is in the same directory as the executable, with the name \'discord_game_sdk.dll\'.");
 
-            try { _client = new Discord((long)appId, (ulong)CreateFlags.NoRequireDiscord); }
+            try { _client = new InternalRpcClient((long)appId, (ulong)CreateFlags.NoRequireDiscord); }
             catch (ResultException ex) { throw new RpcFailedException(ex.Result); }
             
             _client.GetActivityManager().OnActivityJoinRequest += (ref User user) => JoinRequestReceived?.Invoke(this, new JoinRequestReceivedEventArgs((ulong)user.Id, user.Username, int.Parse(user.Discriminator), user.Avatar));
