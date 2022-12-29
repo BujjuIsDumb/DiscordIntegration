@@ -8,7 +8,7 @@
    <a href="https://github.com/BujjuIsDumb/DiscordIntegration/commits/master"><img src="https://img.shields.io/github/last-commit/BujjuIsDumb/DiscordIntegration?color=%23fc8803"></a>
    <a href="https://github.com/BujjuIsDumb/DiscordIntegration/blob/master/LICENSE"><img src="https://img.shields.io/github/license/BujjuIsDumb/DiscordIntegration"></a>
 </p>
-<p align = "center">
-   <a href="https://www.nuget.org/packages/DiscordIntegration/#versions-body-tab"><img src="https://img.shields.io/nuget/v/DiscordIntegration"></a>
-   <a href="https://www.nuget.org/packages/DiscordIntegration"><img src="https://img.shields.io/nuget/dt/DiscordIntegration"></a>
+<p align="center">
+   <a href="https://www.nuget.org/packages/DiscordIntegration/"><img src="https://img.shields.io/nuget/v/DiscordIntegration?label=download"></a>
+   <a href="https://www.nuget.org/packages/DiscordIntegration/#versions-body-tab"><img src="https://img.shields.io/nuget/vpre/DiscordIntegration?label=prerelease%20download"></a>
 </p>
