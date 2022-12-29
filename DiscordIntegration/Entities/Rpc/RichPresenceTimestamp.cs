@@ -30,17 +30,24 @@ namespace DiscordIntegration.Entities.Rpc
         /// <summary>
         ///     Initializes a new instance of the <see cref="RichPresenceTimestamp"/> class.
         /// </summary>
-        /// <param name="timestamnp">The time to display.</param>
+        /// <param name="timestamp">The time to display.</param>
         /// <param name="displayType">The display type.</param>
-        public RichPresenceTimestamp(DateTime timestamnp, TimestampDisplayType displayType)
+        public RichPresenceTimestamp(DateTime timestamp, TimestampDisplayType displayType)
         {
+            
             if (displayType == TimestampDisplayType.Left)
             {
-                End = timestamnp;
+                if (timestamp < DateTime.Now)
+                    throw new ArgumentException("Timestamp must be in the future when using TimestampDisplayType.Left.", nameof(timestamp));
+
+                End = timestamp;
             }
             else if (displayType == TimestampDisplayType.Elapsed)
             {
-                Start = timestamnp;
+                if (timestamp > DateTime.Now)
+                    throw new ArgumentException("Timestamp must be in the past when using TimestampDisplayType.Elapsed.", nameof(timestamp));
+
+                Start = timestamp;
             }
         }
 
