@@ -297,17 +297,14 @@ namespace DiscordIntegration.Entities.Rpc
         {
             if (setLogHook.HasValue)
                 setLogHook.Value.Free();
+            
             setLogHook = GCHandle.Alloc(callback);
             Methods.SetLogHook(MethodsPtr, minLevel, GCHandle.ToIntPtr(setLogHook.Value), SetLogHookCallbackImpl);
         }
 
         public ActivityManager GetActivityManager()
         {
-            ActivityManagerInstance ??= new ActivityManager(
-                  Methods.GetActivityManager(MethodsPtr),
-                  ActivityEventsPtr,
-                  ref ActivityEvents
-                );
+            ActivityManagerInstance ??= new ActivityManager(Methods.GetActivityManager(MethodsPtr),ActivityEventsPtr,ref ActivityEvents);
             return ActivityManagerInstance;
         }
 
@@ -509,10 +506,12 @@ namespace DiscordIntegration.Entities.Rpc
         {
             if (eventsPtr == nint.Zero)
                 throw new ResultException(Result.InternalError);
-            InitEvents(eventsPtr, ref events);
-            MethodsPtr = ptr;
+
             if (MethodsPtr == nint.Zero)
                 throw new ResultException(Result.InternalError);
+
+            InitEvents(eventsPtr, ref events);
+            MethodsPtr = ptr;
         }
 
         public void InitEvents(nint eventsPtr, ref FFIEvents events)
@@ -527,6 +526,7 @@ namespace DiscordIntegration.Entities.Rpc
         public void RegisterCommand(string command)
         {
             var res = Methods.RegisterCommand(MethodsPtr, command);
+            
             if (res != Result.Ok)
                 throw new ResultException(res);
         }
@@ -534,6 +534,7 @@ namespace DiscordIntegration.Entities.Rpc
         public void RegisterSteam(uint steamId)
         {
             var res = Methods.RegisterSteam(MethodsPtr, steamId);
+            
             if (res != Result.Ok)
                 throw new ResultException(res);
         }
