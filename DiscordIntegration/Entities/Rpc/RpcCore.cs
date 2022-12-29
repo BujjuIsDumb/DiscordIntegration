@@ -202,6 +202,7 @@ namespace DiscordIntegration.Entities.Rpc
 
         public ResultException(Result result) : base(result.ToString())
         {
+            Result = result;
         }
     }
 
