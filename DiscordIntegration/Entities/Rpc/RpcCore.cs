@@ -78,20 +78,20 @@ namespace DiscordIntegration.Entities.Rpc
         Playing = 0,
         Streaming = 1,
         Listening = 2,
-        Watching = 3,
+        Watching = 3
     }
 
     internal enum ActivityActionType
     {
         Join = 1,
-        Spectate = 2,
+        Spectate = 2
     }
 
     internal enum ActivityJoinRequestReply
     {
         No = 0,
         Yes = 1,
-        Ignore = 2,
+        Ignore = 2
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]

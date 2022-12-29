@@ -57,6 +57,7 @@ namespace DiscordIntegration
 
         /// <summary>
         ///     Starts this RPC client.
+        ///     <para>This will block the task until the client is disposed.</para>
         /// </summary>
         /// <param name="rpc">The RPC to use.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
