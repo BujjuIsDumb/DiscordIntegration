@@ -73,7 +73,8 @@ namespace DiscordIntegration.Exceptions
             [Result.UnauthorizedForAchievement] = "your application cannot update this achievement",
             [Result.InvalidGiftCode] = "the gift code is not valid",
             [Result.PurchaseError] = "something went wrong during the purchase flow",
-            [Result.TransactionAborted] = "purchase flow aborted because the SDK is being torn down"
+            [Result.TransactionAborted] = "purchase flow aborted because the SDK is being torn down",
+            [Result.DrawingInitFailed] = "undocumented"
         };
         
         internal RpcFailedException(Result result) : base($"{(int)result} ({result}) {ResultDescriptions[result]}")
