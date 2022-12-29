@@ -27,13 +27,6 @@ namespace DiscordIntegration.Args
     /// </summary>
     public class JoinRequestReceivedEventArgs
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="JoinRequestReceivedEventArgs"/> class.
-        /// </summary>
-        /// <param name="userId">The user's <see href="https://en.wikipedia.org/wiki/Snowflake_ID">Snowflake ID</see>.</param>
-        /// <param name="username">The user's username.</param>
-        /// <param name="discriminator">The user's discriminator; the 4 digit number that comes after their username.</param>
-        /// <param name="avatarUrl">The user's avatar URL.</param>
         internal JoinRequestReceivedEventArgs(ulong userId, string username, int discriminator, string avatarUrl)
         {
             UserId = userId;
