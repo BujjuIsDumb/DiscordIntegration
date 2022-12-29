@@ -58,17 +58,6 @@ namespace DiscordIntegration.Entities.Rpc
         public RichPresenceParty Party { get; set; }
 
         /// <summary>
-        ///     Gets or sets whether the match is in progress.
-        /// </summary>
-        public bool InProgress { get; set; }
-
-        internal string JoinSecret { get; set; }
-
-        internal string SpectateSecret { get; set; }
-
-        internal string MatchSecret { get; set; } = Guid.NewGuid().ToString();
-
-        /// <summary>
         ///     Adds a state to this RPC.
         /// </summary>
         /// <param name="state">The state to add.</param>
@@ -134,49 +123,12 @@ namespace DiscordIntegration.Entities.Rpc
             return this;
         }
 
-        /// <summary>
-        ///     Makes the match in progress.
-        /// </summary>
-        /// <returns>This RPC.</returns>
-        public RichPresence AsInProgress()
-        {
-            InProgress = true;
-            return this;
-        }
-
-        /// <summary>
-        ///     Adds a join button to this RPC.
-        /// </summary>
-        /// <returns>This RPC.</returns>
-        public RichPresence WithJoinButton()
-        {
-            JoinSecret = Guid.NewGuid().ToString();
-            return this;
-        }
-
-        /// <summary>
-        ///     Adds a join button to this RPC.
-        /// </summary>
-        /// <returns>This RPC.</returns>
-        public RichPresence WithSpectateButton()
-        {
-            SpectateSecret = Guid.NewGuid().ToString();
-            return this;
-        }
-
         internal Activity ToActivity()
         {
             var activity = new Activity
             {
                 State = State,
-                Details = Details,
-                Instance = InProgress,
-                Secrets =
-                {
-                    Match = MatchSecret,
-                    Join = JoinSecret,
-                    Spectate = SpectateSecret
-                }
+                Details = Details
             };
 
             if (Timestamp?.Start != null)

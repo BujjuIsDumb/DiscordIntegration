@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using DiscordIntegration.Args;
 using DiscordIntegration.Entities.Rpc;
 using DiscordIntegration.Exceptions;
 
@@ -53,11 +52,6 @@ namespace DiscordIntegration
 
             if (steamId != null)
                 _client.GetActivityManager().RegisterSteam(steamId.Value);
-
-            _client.GetActivityManager().OnActivityJoin += (secret) => Join?.Invoke(this, new JoinEventArgs());
-            _client.GetActivityManager().OnActivitySpectate += (secret) => Spectate?.Invoke(this, new SpectateEventArgs());
-            _client.GetActivityManager().OnActivityJoinRequest += (ref User user) => JoinRequest?.Invoke(this, new JoinRequestEventArgs((ulong)user.Id, user.Username, int.Parse(user.Discriminator), user.Avatar));
-            _client.GetActivityManager().OnActivityInvite += (ActivityActionType type, ref User user, ref Activity activity) => Invite?.Invoke(this, new InviteEventArgs((ulong)user.Id, user.Username, int.Parse(user.Discriminator), user.Avatar));
         }
 
         /// <summary>
@@ -135,10 +129,5 @@ namespace DiscordIntegration
             _started = false;
             _isDisposed = true;
         }
-
-        public event EventHandler<JoinEventArgs> Join;
-        public event EventHandler<SpectateEventArgs> Spectate;
-        public event EventHandler<JoinRequestEventArgs> JoinRequest;
-        public event EventHandler<InviteEventArgs> Invite;
     }
 }
