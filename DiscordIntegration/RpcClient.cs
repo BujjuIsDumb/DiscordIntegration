@@ -56,6 +56,18 @@ namespace DiscordIntegration
             }
         }
 
+        public void Update(RichPresence presence)
+        {
+            if (_isDisposed)
+                throw new ObjectDisposedException("RpcClient");
+
+            _client.GetActivityManager().UpdateActivity(presence.ToActivity(), (res) =>
+            {
+                if (res != Result.Ok)
+                    throw new Exception($"Failed to update activity: {res}");
+            });
+        }
+
         public void Dispose()
         {
             _client.GetActivityManager().ClearActivity((result) =>
