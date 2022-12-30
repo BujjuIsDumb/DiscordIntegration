@@ -39,8 +39,12 @@ namespace DiscordIntegration
         /// </summary>
         /// <param name="appId">Application/client ID from the <see href="https://discord.com/developers">Discord Developer Portal</see>.</param>
         /// <param name="steamId">Steam app ID if the app is on Steam.</param>
+        /// <exception cref="FileNotFoundException">Thrown when the Discord Game SDK is not found.</exception>
         public RpcClient(ulong appId, uint? steamId = null)
         {
+            if (!File.Exists(".\\discord_game_sdk.dll"))
+                throw new FileNotFoundException("The Discord Game SDK was not found. Please place the DLL file in the same directory as the executable.");
+
             _client = new Discord((long)appId, (ulong)CreateFlags.Default);
             if (steamId != null)
                 _client.GetActivityManager().RegisterSteam(steamId.Value);
