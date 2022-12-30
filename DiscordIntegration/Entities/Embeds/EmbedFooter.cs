@@ -32,8 +32,8 @@ namespace DiscordIntegration.Entities.Embeds
         /// <summary>
         ///     Initializes a new instance of the <see cref="EmbedFooter"/> class.
         /// </summary>
-        /// <param name="text">The footer text.</param>
-        /// <param name="iconUrl">The footer icon URL.</param>
+        /// <param name="text">Footer text.</param>
+        /// <param name="iconUrl">URL to the footer icon.</param>
         public EmbedFooter(string text, string iconUrl = null)
         {
             Text = text;
@@ -47,7 +47,7 @@ namespace DiscordIntegration.Entities.Embeds
         public string Text { get; set; }
 
         /// <summary>
-        ///     Gets or sets the footer icon URL.
+        ///     Gets or sets the URL to the footer icon.
         /// </summary>
         [JsonPropertyName("icon_url")]
         public string IconUrl { get; set; }

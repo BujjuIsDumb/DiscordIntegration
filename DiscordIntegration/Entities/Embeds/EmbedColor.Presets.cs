@@ -80,7 +80,7 @@ namespace DiscordIntegration.Entities.Embeds
         public static EmbedColor LimeGreen { get; } = new EmbedColor("00FF00");
 
         /// <summary>
-        ///     Gets an <see cref="EmbedColor"/> representing emerald green.
+        ///     Gets an <see cref="EmbedColor"/> representing emerald.
         /// </summary>
         public static EmbedColor Emerald { get; } = new EmbedColor("106440");
 
@@ -125,7 +125,7 @@ namespace DiscordIntegration.Entities.Embeds
         public static EmbedColor Magenta { get; } = new EmbedColor("FF00FF");
 
         /// <summary>
-        ///     Gets an <see cref="EmbedColor"/> representing Discord's blurple.
+        ///     Gets an <see cref="EmbedColor"/> representing Discord's branding color.
         /// </summary>
         public static EmbedColor Blurple { get; } = new EmbedColor("6064F4");
 

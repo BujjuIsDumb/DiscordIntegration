@@ -23,40 +23,29 @@
 namespace DiscordIntegration.Entities
 {
     /// <summary>
-    ///     Profile information to override the webhook profile.
+    ///     Media information for <see cref="RichPresence"/> objects.
     /// </summary>
-    public sealed class WebhookProfile
+    public sealed class RichPresenceMedia
     {
         /// <summary>
-        ///     Gets or sets the username to override the webhook profile.
+        ///     Initializes a new instance of the <see cref="RichPresenceMedia"/> class.
         /// </summary>
-        public string Username { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the URL to the avatar to override the webhook profile.
-        /// </summary>
-        public string AvatarUrl { get; set; }
-        
-        /// <summary>
-        ///     Adds a username override to this profile override.
-        /// </summary>
-        /// <param name="username">Username override to add.</param>
-        /// <returns>This profile override.</returns>
-        public WebhookProfile WithUsername(string username)
+        /// <param name="imageKey">Image key from the <see href="https://discord.com/developers">Discord Developer Portal</see>.</param>
+        /// <param name="tooltip">Image tooltip.</param>
+        public RichPresenceMedia(string imageKey, string tooltip = null)
         {
-            Username = username;
-            return this;
+            ImageKey = imageKey;
+            Tooltip = tooltip;
         }
 
         /// <summary>
-        ///     Adds an avatar URL override to this profile override.
+        ///     Gets or sets the image key from the <see href="https://discord.com/developers">Discord Developer Portal</see>.
         /// </summary>
-        /// <param name="avatarUrl">URL to the avatar override.</param>
-        /// <returns>This profile override.</returns>
-        public WebhookProfile WithAvatarUrl(string avatarUrl)
-        {
-            AvatarUrl = avatarUrl;
-            return this;
-        }
+        public string ImageKey { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the image tooltip.
+        /// </summary>
+        public string Tooltip { get; set; }
     }
 }

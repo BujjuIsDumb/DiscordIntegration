@@ -27,9 +27,6 @@ namespace DiscordIntegration.Entities.Embeds
 {
     public partial struct EmbedColor
     {
-        /// <summary>
-        ///     A converter that converts <see cref="EmbedColor"/> to and from JSON.
-        /// </summary>
         internal class Converter : JsonConverter<EmbedColor>
         {
             public override EmbedColor Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

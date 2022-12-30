@@ -30,36 +30,36 @@ namespace DiscordIntegration.Entities.Embeds
     /// </summary>
     public partial struct EmbedColor
     {
-        /// <summary>
-        ///     The color value.
-        /// </summary>
         internal int _value;
 
+        #region Constructors
         /// <summary>
         ///     Initializes a new instance of the <see cref="EmbedColor"/> struct.
         /// </summary>
-        /// <param name="hexColor">The color in hexadecimal format.</param>
+        /// <param name="hexColor">Hex color code for the color.</param>
         public EmbedColor(string hexColor)
             => Hexadecimal = hexColor;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="EmbedColor"/> struct.
         /// </summary>
-        /// <param name="decimalColor">The color in decimal format.</param>
+        /// <param name="decimalColor">Decimal color code for the color.</param>
         public EmbedColor(decimal decimalColor)
             => Decimal = decimalColor;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="EmbedColor"/> struct.
         /// </summary>
-        /// <param name="r">The R value of the color in RGB format.</param>
-        /// <param name="g">The G value of the color in RGB format.</param>
-        /// <param name="b">The B value of the color in RGB format.</param>
+        /// <param name="r">Red color value.</param>
+        /// <param name="g">Green color value.</param>
+        /// <param name="b">Blue color value.</param>
         public EmbedColor(short r, short g, short b)
             => RGB = (r, g, b);
+        #endregion
 
+        #region Properties
         /// <summary>
-        ///     Gets or sets the color in hexadecimal format.
+        ///     Gets or sets the hex color code for the color.
         /// </summary>
         public string Hexadecimal
         {
@@ -74,7 +74,7 @@ namespace DiscordIntegration.Entities.Embeds
         }
 
         /// <summary>
-        ///     Gets or sets the color in decimal format.
+        ///     Gets or sets the decimal color code for the color.
         /// </summary>
         public decimal Decimal
         {
@@ -83,12 +83,13 @@ namespace DiscordIntegration.Entities.Embeds
         }
 
         /// <summary>
-        ///     Gets or sets the color in RGB format.
+        ///     Gets or sets the RGB color code for the color.
         /// </summary>
         public (short R, short G, short B) RGB
         {
             get => ((short)(_value >> 16), (short)(_value >> 8), (short)_value);
             set => _value = (value.R << 16) + (value.G << 8) + value.B;
         }
+        #endregion
     }
 }

@@ -43,6 +43,7 @@ namespace DiscordIntegration.Entities.Embeds
 
         /// <summary>
         ///     Gets or sets the URL of this embed.
+        ///     <para>Makes the title of this embed a hyperlink.</para>
         /// </summary>
         [JsonPropertyName("url")]
         public string Url { get; set; }
@@ -54,36 +55,36 @@ namespace DiscordIntegration.Entities.Embeds
         public DateTime Timestamp { get; set; }
 
         /// <summary>
-        ///     Gets or sets the color information of this embed.
+        ///     Gets or sets the color information for this embed.
         /// </summary>
         [JsonPropertyName("color")]
         [JsonConverter(typeof(EmbedColor.Converter))]
         public EmbedColor Color { get; set; }
 
         /// <summary>
-        ///     Gets or sets the footer information of this embed.
+        ///     Gets or sets the footer information for this embed.
         /// </summary>
         [JsonPropertyName("footer")]
         public EmbedFooter Footer { get; set; }
 
         /// <summary>
-        ///     Gets or sets the image information of this embed.
+        ///     Gets or sets the image information for this embed.
         /// </summary>
         [JsonPropertyName("image")]
         public EmbedMedia Image { get; set; }
 
         /// <summary>
-        ///     Gets or sets the thumbnail image information of this embed.
+        ///     Gets or sets the thumbnail image information for this embed.
         /// </summary>
         [JsonPropertyName("thumbnail")]
         public EmbedMedia Thumbnail { get; set; }
 
         /// <summary>
-        ///     Gets or sets the author information of this embed.
+        ///     Gets or sets the author information for this embed.
         /// </summary>
         [JsonPropertyName("author")]
         public EmbedAuthor Author { get; set; }
-
+        
         /// <summary>
         ///     Gets or sets the fields of this embed.
         /// </summary>
@@ -93,7 +94,7 @@ namespace DiscordIntegration.Entities.Embeds
         /// <summary>
         ///     Adds a title to this embed.
         /// </summary>
-        /// <param name="title">The title to add.</param>
+        /// <param name="title">Title to add.</param>
         /// <returns>This embed.</returns>
         public Embed WithTitle(string title)
         {
@@ -104,7 +105,7 @@ namespace DiscordIntegration.Entities.Embeds
         /// <summary>
         ///     Adds a description to this embed.
         /// </summary>
-        /// <param name="description">The description to add.</param>
+        /// <param name="description">Description to add.</param>
         /// <returns>This embed.</returns>
         public Embed WithDescription(string description)
         {
@@ -114,8 +115,9 @@ namespace DiscordIntegration.Entities.Embeds
 
         /// <summary>
         ///     Adds a URL to this embed.
+        ///     <para>Makes the title of this embed a hyperlink.</para>
         /// </summary>
-        /// <param name="url">The URL to add.</param>
+        /// <param name="url">URL to add.</param>
         /// <returns>This embed.</returns>
         public Embed WithUrl(string url)
         {
@@ -126,7 +128,7 @@ namespace DiscordIntegration.Entities.Embeds
         /// <summary>
         ///     Adds a timestamp to this embed.
         /// </summary>
-        /// <param name="timestamp">The timestamp to add.</param>
+        /// <param name="timestamp">Timestamp to add.</param>
         /// <returns>This embed.</returns>
         public Embed WithTimestamp(DateTime timestamp)
         {
@@ -137,7 +139,7 @@ namespace DiscordIntegration.Entities.Embeds
         /// <summary>
         ///     Adds color information to this embed.
         /// </summary>
-        /// <param name="color">The color to add.</param>
+        /// <param name="color">Color information to add.</param>
         /// <returns>This embed.</returns>
         public Embed WithColor(EmbedColor color)
         {
@@ -148,8 +150,8 @@ namespace DiscordIntegration.Entities.Embeds
         /// <summary>
         ///     Adds footer information to this embed.
         /// </summary>
-        /// <param name="footer">The footer information to add.</param>
-        /// <returns>This embed.</returns>
+        /// <param name="footer">Footer information to add.</param>
+        /// <returns></returns>
         public Embed WithFooter(EmbedFooter footer)
         {
             Footer = footer;
@@ -159,7 +161,7 @@ namespace DiscordIntegration.Entities.Embeds
         /// <summary>
         ///     Adds image information to this embed.
         /// </summary>
-        /// <param name="image">The image information to add.</param>
+        /// <param name="image">Image information to add.</param>
         /// <returns>This embed.</returns>
         public Embed WithImage(EmbedMedia image)
         {
@@ -170,7 +172,7 @@ namespace DiscordIntegration.Entities.Embeds
         /// <summary>
         ///     Adds thumbnail image information to this embed.
         /// </summary>
-        /// <param name="thumbnail">THe thumbnail image information to add.</param>
+        /// <param name="thumbnail">Thumbnail image information to add.</param>
         /// <returns>This embed.</returns>
         public Embed WithThumbnail(EmbedMedia thumbnail)
         {
@@ -181,7 +183,7 @@ namespace DiscordIntegration.Entities.Embeds
         /// <summary>
         ///     Adds author information to this embed.
         /// </summary>
-        /// <param name="author">The author information to add.</param>
+        /// <param name="author">Author information to add.</param>
         /// <returns>This embed.</returns>
         public Embed WithAuthor(EmbedAuthor author)
         {
@@ -192,7 +194,7 @@ namespace DiscordIntegration.Entities.Embeds
         /// <summary>
         ///     Adds a field to this embed.
         /// </summary>
-        /// <param name="field">The field to add.</param>
+        /// <param name="field">Field to add.</param>
         /// <returns>This embed.</returns>
         public Embed AddField(EmbedField field)
         {
@@ -205,7 +207,7 @@ namespace DiscordIntegration.Entities.Embeds
         /// <summary>
         ///     Adds fields to this embed.
         /// </summary>
-        /// <param name="fields">The fields to add.</param>
+        /// <param name="fields">Fields to add.</param>
         /// <returns>This embed.</returns>
         public Embed AddFields(params EmbedField[] fields)
         {
@@ -218,7 +220,7 @@ namespace DiscordIntegration.Entities.Embeds
         /// <summary>
         ///     Adds fields to this embed.
         /// </summary>
-        /// <param name="fields">The fields to add.</param>
+        /// <param name="fields">Fields to add.</param>
         /// <returns>This embed.</returns>
         public Embed AddFields(IEnumerable<EmbedField> fields)
         {

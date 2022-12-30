@@ -32,9 +32,9 @@ namespace DiscordIntegration.Entities.Embeds
         /// <summary>
         ///     Initializes a new instance of the <see cref="EmbedField"/> class.
         /// </summary>
-        /// <param name="name">The field name.</param>
-        /// <param name="value">The field value.</param>
-        /// <param name="inline">Whether the field should be displayed inline.</param>
+        /// <param name="name">Field name.</param>
+        /// <param name="value">Field value.</param>
+        /// <param name="inline">Whether the field is displayed inline.</param>
         public EmbedField(string name, string value, bool inline = false)
         {
             Name = name;
@@ -55,7 +55,7 @@ namespace DiscordIntegration.Entities.Embeds
         public string Value { get; set; }
 
         /// <summary>
-        ///     Gets or sets whether the field should be displayed inline.
+        ///     Gets or sets whether the field is displayed inline.
         /// </summary>
         [JsonPropertyName("inline")]
         public bool Inline { get; set; }

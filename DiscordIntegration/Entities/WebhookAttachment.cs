@@ -25,71 +25,54 @@ using System.Text.Json.Serialization;
 namespace DiscordIntegration.Entities
 {
     /// <summary>
-    ///     Represents a Discord webhook attachment.
+    ///     Attachment information for webhooks messages.
     /// </summary>
-    public sealed class WebhookAttachment
+    public class WebhookAttachment
     {
         /// <summary>
-        ///     Gets or sets the attachment's filename.
+        ///     Initializes a new instance of the <see cref="WebhookAttachment"/> class.
         /// </summary>
-        [JsonPropertyName("filename")]
-        public string FileName { get; private set; }
+        /// <param name="file">File that this attachment represents.</param>
+        /// <param name="altText">Alt-text for the file.</param>
+        /// <param name="spoiler">Whether the file should have the spoiler tag.</param>
+        public WebhookAttachment(FileInfo file, string altText = null, bool spoiler = false)
+        {
+            FileName = (spoiler ? "SPOILER_" : null) + file.Name;
+            AltText = altText;
+            FileData = File.ReadAllBytes(file.FullName);
+        }
+
+        internal WebhookAttachment(WebhookAttachment original, int id)
+        {
+            Id = id;
+            FileName = original.FileName;
+            AltText = original.AltText;
+            FileData = original.FileData;
+        }
 
         /// <summary>
-        ///     Gets or sets the attachment's alt text for screen readers.
+        ///     Gets the ID of the attachment.
+        /// </summary>
+        [JsonPropertyName("id")]
+        [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
+        public int Id { get; internal set; }
+
+        /// <summary>
+        ///     Gets the name of the file.
+        /// </summary>
+        [JsonPropertyName("filename")]
+        public string FileName { get; internal set; }
+
+        /// <summary>
+        ///     Gets or sets the alt-text for the file.
         /// </summary>
         [JsonPropertyName("description")]
         public string AltText { get; set; }
 
         /// <summary>
-        ///     Gets or sets the attachment's bytes.
+        ///     Gets the file data.
         /// </summary>
         [JsonIgnore]
-        public byte[] Data { get; private set; }
-
-        /// <summary>
-        ///     Gets or sets the attachment ID. Always 0, as the webhook client only supports sending one attachment.
-        /// </summary>
-        [JsonPropertyName("id")]
-        [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
-        public int Id { get; internal set; } = 0;
-
-        /// <summary>
-        ///     Gets a <see cref="WebhookAttachment"/> from a local file.
-        /// </summary>
-        /// <param name="filePath">The file path.</param>
-        /// <param name="altText">The attachment's alt text for screen readers.</param>
-        /// <param name="spoiler">Whether the attachment should be sent as a spoiler.</param>
-        /// <returns>The attachment.</returns>
-        public static WebhookAttachment FromFile(string filePath, string altText = null, bool spoiler = false)
-        {
-            return new WebhookAttachment()
-            {
-                FileName = (spoiler ? "SPOILER_" : null) + Path.GetFileName(filePath),
-                AltText = altText,
-                Data = File.ReadAllBytes(filePath)
-            };
-        }
-
-        /// <summary>
-        ///     Gets a <see cref="WebhookAttachment"/> from a stream.
-        /// </summary>
-        /// <param name="stream">The stream.</param>
-        /// <param name="fileName">The attachment's file name.</param>
-        /// <param name="altText">The attachment's alt text for screen readers.</param>
-        /// <param name="spoiler">Whether the attachment should be sent as a spoiler.</param>
-        /// <returns>The attachment.</returns>
-        public static async Task<WebhookAttachment> FromStreamAsync(FileStream stream, string fileName, string altText = null, bool spoiler = false)
-        {
-            var attachment = new WebhookAttachment()
-            {
-                FileName = (spoiler ? "SPOILER_" : null) + fileName,
-                AltText = altText,
-                Data = new byte[stream.Length]
-            };
-
-            await stream.ReadAsync(attachment.Data.AsMemory(0, (int)stream.Length));
-            return attachment;
-        }
+        public byte[] FileData { get; internal set; }
     }
 }

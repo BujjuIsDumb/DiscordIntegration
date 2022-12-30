@@ -20,36 +20,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.Net;
-
-namespace DiscordIntegration.Exceptions
+namespace DiscordIntegration.Entities
 {
     /// <summary>
-    ///     An exception that is thrown when a request to the Discord API fails.
+    ///     Party information for <see cref="RichPresence"/> objects.
     /// </summary>
-    public class BadRequestException : Exception
+    public sealed class RichPresenceParty
     {
-        internal BadRequestException(HttpResponseMessage response)
-            : base($"The request to the Discord API failed with status code {(int)response.StatusCode} ({response.StatusCode}).") => Response = response;
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RichPresenceParty"/> class.
+        /// </summary>
+        /// <param name="currentSize">Current size of the party.</param>
+        /// <param name="maxSize">Maximum size of the party.</param>
+        /// <param name="customId">Sets the party ID to a custom value. A <see cref="Guid"/> is used instead if null.</param>
+        public RichPresenceParty(int currentSize, int maxSize, string customId = null)
+        {
+            CurrentSize = currentSize;
+            MaxSize = maxSize;
+            Id = customId ?? Guid.NewGuid().ToString();
+        }
 
         /// <summary>
-        ///     Gets the response that caused the exception.
+        ///    Gets or sets the current size of the party.
         /// </summary>
-        public HttpResponseMessage Response { get; }
+        public int CurrentSize { get; set; }
 
         /// <summary>
-        ///     Gets the error message returned by the Discord API.
+        ///     Gets or sets the maximum size of the party.
         /// </summary>
-        public string ErrorMessage => Response.Content.ReadAsStringAsync().Result;
+        public int MaxSize { get; set; }
 
         /// <summary>
-        ///     Gets the error code returned by the Discord API.
+        ///     Gets or sets the ID of the party.
         /// </summary>
-        public int ErrorCode => (int)Response.StatusCode;
-
-        /// <summary>
-        ///     Gets the error code returned by the Discord API.
-        /// </summary>
-        public HttpStatusCode HttpStatusCode => Response.StatusCode;
+        public string Id { get; }
     }
 }

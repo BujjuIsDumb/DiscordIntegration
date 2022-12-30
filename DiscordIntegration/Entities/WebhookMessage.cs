@@ -20,38 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.Text.Json.Serialization;
 using DiscordIntegration.Entities.Embeds;
 
 namespace DiscordIntegration.Entities
 {
     /// <summary>
-    ///     Represents a message to be sent to a Discord webhook.
+    ///    Represents a message to be sent by a webhook.
     /// </summary>
     public sealed class WebhookMessage
     {
         /// <summary>
-        ///     Gets or sets the content of this message.
+        ///     Gets or sets the message content.
         /// </summary>
-        [JsonPropertyName("content")]
         public string Content { get; set; }
 
         /// <summary>
-        ///     Gets or sets the embeds of this message.
+        ///     Gets or sets the embeds.
         /// </summary>
-        [JsonPropertyName("embeds")]
         public List<Embed> Embeds { get; set; }
 
         /// <summary>
-        ///     Gets or sets whether this message should be sent as a text-to-speech message.
+        ///     Gets or sets whether the message should be sent as a text-to-speech message.
         /// </summary>
-        [JsonPropertyName("tts")]
         public bool Tts { get; set; }
 
         /// <summary>
         ///     Adds content to this message.
         /// </summary>
-        /// <param name="content">The content to add.</param>
+        /// <param name="content">Message content to add.</param>
         /// <returns>This message.</returns>
         public WebhookMessage WithContent(string content)
         {
@@ -62,7 +58,7 @@ namespace DiscordIntegration.Entities
         /// <summary>
         ///     Adds an embed to this message.
         /// </summary>
-        /// <param name="embed">The embed to add.</param>
+        /// <param name="embed">Embed to add.</param>
         /// <returns>This message.</returns>
         public WebhookMessage AddEmbed(Embed embed)
         {
@@ -75,7 +71,7 @@ namespace DiscordIntegration.Entities
         /// <summary>
         ///     Adds embeds to this message.
         /// </summary>
-        /// <param name="embeds">The embeds to add.</param>
+        /// <param name="embeds">Embeds to add.</param>
         /// <returns>This message.</returns>
         public WebhookMessage AddEmbeds(params Embed[] embeds)
         {
@@ -88,23 +84,13 @@ namespace DiscordIntegration.Entities
         /// <summary>
         ///     Adds embeds to this message.
         /// </summary>
-        /// <param name="embeds">The embeds to add.</param>
+        /// <param name="embeds">Embeds to add.</param>
         /// <returns>This message.</returns>
         public WebhookMessage AddEmbeds(IEnumerable<Embed> embeds)
         {
             Embeds ??= new List<Embed>();
 
             Embeds.AddRange(embeds);
-            return this;
-        }
-
-        /// <summary>
-        ///     Makes this a text-to-speech message.
-        /// </summary>
-        /// <returns>This message.</returns>
-        public WebhookMessage AsTts()
-        {
-            Tts = true;
             return this;
         }
     }
