@@ -24,21 +24,42 @@ using DiscordIntegration.Entities.Embeds;
 
 namespace DiscordIntegration.Entities
 {
+    /// <summary>
+    ///    Represents a message to be sent by a webhook.
+    /// </summary>
     public sealed class WebhookMessage
     {
+        /// <summary>
+        ///     Gets or sets the message content.
+        /// </summary>
         public string Content { get; set; }
-        
+
+        /// <summary>
+        ///     Gets or sets the embeds.
+        /// </summary>
         public List<Embed> Embeds { get; set; }
 
+        /// <summary>
+        ///     Gets or sets whether the message should be sent as a text-to-speech message.
+        /// </summary>
         public bool Tts { get; set; }
 
-        #region Chain Construction Methods
+        /// <summary>
+        ///     Adds content to this message.
+        /// </summary>
+        /// <param name="content">Message content to add.</param>
+        /// <returns>This message.</returns>
         public WebhookMessage WithContent(string content)
         {
             Content = content;
             return this;
         }
 
+        /// <summary>
+        ///     Adds an embed to this message.
+        /// </summary>
+        /// <param name="embed">Embed to add.</param>
+        /// <returns>This message.</returns>
         public WebhookMessage AddEmbed(Embed embed)
         {
             Embeds ??= new List<Embed>();
@@ -47,6 +68,11 @@ namespace DiscordIntegration.Entities
             return this;
         }
 
+        /// <summary>
+        ///     Adds embeds to this message.
+        /// </summary>
+        /// <param name="embeds">Embeds to add.</param>
+        /// <returns>This message.</returns>
         public WebhookMessage AddEmbeds(params Embed[] embeds)
         {
             Embeds ??= new List<Embed>();
@@ -55,6 +81,11 @@ namespace DiscordIntegration.Entities
             return this;
         }
 
+        /// <summary>
+        ///     Adds embeds to this message.
+        /// </summary>
+        /// <param name="embeds">Embeds to add.</param>
+        /// <returns>This message.</returns>
         public WebhookMessage AddEmbeds(IEnumerable<Embed> embeds)
         {
             Embeds ??= new List<Embed>();
@@ -62,6 +93,5 @@ namespace DiscordIntegration.Entities
             Embeds.AddRange(embeds);
             return this;
         }
-        #endregion
     }
 }

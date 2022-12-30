@@ -24,11 +24,21 @@ using System.Text.Json.Serialization;
 
 namespace DiscordIntegration.Entities.Embeds
 {
+    /// <summary>
+    ///     Image information for <see cref="Embed"/> objects.
+    /// </summary>
     public sealed class EmbedMedia
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="EmbedMedia"/> class.
+        /// </summary>
+        /// <param name="url">URL to the image.</param>
         public EmbedMedia(string url)
             => Url = url;
 
+        /// <summary>
+        ///     Gets or sets the URL to the image.
+        /// </summary>
         [JsonPropertyName("url")]
         public string Url { get; set; }
     }

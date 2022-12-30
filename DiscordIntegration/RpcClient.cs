@@ -25,12 +25,20 @@ using DiscordIntegration.RpcCore;
 
 namespace DiscordIntegration
 {
+    /// <summary>
+    ///     A client for the Discord RPC.
+    /// </summary>
     public class RpcClient : IDisposable
     {
         private Discord _client;
 
         private bool _isDisposed;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RpcClient" /> class.
+        /// </summary>
+        /// <param name="appId">Application/client ID from the <see href="https://discord.com/developers">Discord Developer Portal</see>.</param>
+        /// <param name="steamId">Steam app ID if the app is on Steam.</param>
         public RpcClient(ulong appId, uint? steamId = null)
         {
             _client = new Discord((long)appId, (ulong)CreateFlags.Default);
@@ -38,6 +46,13 @@ namespace DiscordIntegration
                 _client.GetActivityManager().RegisterSteam(steamId.Value);
         }
 
+        /// <summary>
+        ///     Starts the client.
+        /// </summary>
+        /// <param name="presence">The presence to start with.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
+        /// <exception cref="Exception">Thrown when the presence fails to update.</exception>
         public async Task StartAsync(RichPresence presence)
         {
             if (_isDisposed)
@@ -56,6 +71,12 @@ namespace DiscordIntegration
             }
         }
 
+        /// <summary>
+        ///     Updates the presence.
+        /// </summary>
+        /// <param name="presence">The presence to use.</param>
+        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
+        /// <exception cref="Exception">Thrown when the presence fails to update.</exception>
         public void Update(RichPresence presence)
         {
             if (_isDisposed)
@@ -68,6 +89,7 @@ namespace DiscordIntegration
             });
         }
 
+        /// <exception cref="Exception">Thrown when the presence fails to clear.</exception>
         public void Dispose()
         {
             _client.GetActivityManager().ClearActivity((result) =>

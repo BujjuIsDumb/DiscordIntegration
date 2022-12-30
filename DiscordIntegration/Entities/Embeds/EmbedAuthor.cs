@@ -26,6 +26,12 @@ namespace DiscordIntegration.Entities.Embeds
 {
     public sealed class EmbedAuthor
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="EmbedAuthor"/> class.
+        /// </summary>
+        /// <param name="name">Name of the author.</param>
+        /// <param name="url">URL of the author.</param>
+        /// <param name="iconUrl">URL to the icon of the author.</param>
         public EmbedAuthor(string name, string url = null, string iconUrl = null)
         {
             Name = name;
@@ -33,12 +39,21 @@ namespace DiscordIntegration.Entities.Embeds
             IconUrl = iconUrl;
         }
 
+        /// <summary>
+        ///     Gets or sets the name of the author.
+        /// </summary>
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the URL of the author.
+        /// </summary>
         [JsonPropertyName("url")]
         public string Url { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the URL to the icon of the author.
+        /// </summary>
         [JsonPropertyName("icon_url")]
         public string IconUrl { get; set; }
     }

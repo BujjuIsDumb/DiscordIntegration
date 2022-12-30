@@ -24,8 +24,17 @@ using System.Text.Json.Serialization;
 
 namespace DiscordIntegration.Entities
 {
+    /// <summary>
+    ///     Attachment information for webhooks messages.
+    /// </summary>
     public class WebhookAttachment
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="WebhookAttachment"/> class.
+        /// </summary>
+        /// <param name="file">File that this attachment represents.</param>
+        /// <param name="altText">Alt-text for the file.</param>
+        /// <param name="spoiler">Whether the file should have the spoiler tag.</param>
         public WebhookAttachment(FileInfo file, string altText = null, bool spoiler = false)
         {
             FileName = (spoiler ? "SPOILER_" : null) + file.Name;
@@ -41,16 +50,28 @@ namespace DiscordIntegration.Entities
             FileData = original.FileData;
         }
 
+        /// <summary>
+        ///     Gets the ID of the attachment.
+        /// </summary>
         [JsonPropertyName("id")]
         [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
         public int Id { get; internal set; }
 
+        /// <summary>
+        ///     Gets the name of the file.
+        /// </summary>
         [JsonPropertyName("filename")]
         public string FileName { get; internal set; }
 
+        /// <summary>
+        ///     Gets or sets the alt-text for the file.
+        /// </summary>
         [JsonPropertyName("description")]
-        public string AltText { get; internal set; }
+        public string AltText { get; set; }
 
+        /// <summary>
+        ///     Gets the file data.
+        /// </summary>
         [JsonIgnore]
         public byte[] FileData { get; internal set; }
     }

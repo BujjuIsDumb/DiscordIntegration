@@ -22,8 +22,17 @@
 
 namespace DiscordIntegration.Entities
 {
+    /// <summary>
+    ///     Party information for <see cref="RichPresence"/> objects.
+    /// </summary>
     public sealed class RichPresenceParty
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RichPresenceParty"/> class.
+        /// </summary>
+        /// <param name="currentSize">Current size of the party.</param>
+        /// <param name="maxSize">Maximum size of the party.</param>
+        /// <param name="customId">Sets the party ID to a custom value. A <see cref="Guid"/> is used instead if null.</param>
         public RichPresenceParty(int currentSize, int maxSize, string customId = null)
         {
             CurrentSize = currentSize;
@@ -31,10 +40,19 @@ namespace DiscordIntegration.Entities
             Id = customId ?? Guid.NewGuid().ToString();
         }
 
+        /// <summary>
+        ///    Gets or sets the current size of the party.
+        /// </summary>
         public int CurrentSize { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the maximum size of the party.
+        /// </summary>
         public int MaxSize { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the ID of the party.
+        /// </summary>
         public string Id { get; }
     }
 }

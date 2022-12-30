@@ -22,24 +22,41 @@
 
 namespace DiscordIntegration.Entities
 {
+    /// <summary>
+    ///     Profile information to override the webhook profile.
+    /// </summary>
     public sealed class WebhookProfile
     {
+        /// <summary>
+        ///     Gets or sets the username to override the webhook profile.
+        /// </summary>
         public string Username { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the URL to the avatar to override the webhook profile.
+        /// </summary>
         public string AvatarUrl { get; set; }
-
-        #region Chain Construction Methods
+        
+        /// <summary>
+        ///     Adds a username override to this profile override.
+        /// </summary>
+        /// <param name="username">Username override to add.</param>
+        /// <returns>This profile override.</returns>
         public WebhookProfile WithUsername(string username)
         {
             Username = username;
             return this;
         }
 
+        /// <summary>
+        ///     Adds an avatar URL override to this profile override.
+        /// </summary>
+        /// <param name="avatarUrl">URL to the avatar override.</param>
+        /// <returns>This profile override.</returns>
         public WebhookProfile WithAvatarUrl(string avatarUrl)
         {
             AvatarUrl = avatarUrl;
             return this;
         }
-        #endregion
     }
 }

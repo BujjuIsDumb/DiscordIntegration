@@ -24,17 +24,31 @@ using System.Text.Json.Serialization;
 
 namespace DiscordIntegration.Entities.Embeds
 {
+    /// <summary>
+    ///     Footer information for <see cref="Embed"/> objects.
+    /// </summary>
     public sealed class EmbedFooter
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="EmbedFooter"/> class.
+        /// </summary>
+        /// <param name="text">Footer text.</param>
+        /// <param name="iconUrl">URL to the footer icon.</param>
         public EmbedFooter(string text, string iconUrl = null)
         {
             Text = text;
             IconUrl = iconUrl;
         }
 
+        /// <summary>
+        ///     Gets or sets the footer text.
+        /// </summary>
         [JsonPropertyName("text")]
         public string Text { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the URL to the footer icon.
+        /// </summary>
         [JsonPropertyName("icon_url")]
         public string IconUrl { get; set; }
     }

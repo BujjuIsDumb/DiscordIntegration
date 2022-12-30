@@ -25,22 +25,42 @@ using System.Text.RegularExpressions;
 
 namespace DiscordIntegration.Entities.Embeds
 {
+    /// <summary>
+    ///     Color information for <see cref="Embed"/> objects.
+    /// </summary>
     public partial struct EmbedColor
     {
         internal int _value;
 
         #region Constructors
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="EmbedColor"/> struct.
+        /// </summary>
+        /// <param name="hexColor">Hex color code for the color.</param>
         public EmbedColor(string hexColor)
             => Hexadecimal = hexColor;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="EmbedColor"/> struct.
+        /// </summary>
+        /// <param name="decimalColor">Decimal color code for the color.</param>
         public EmbedColor(decimal decimalColor)
             => Decimal = decimalColor;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="EmbedColor"/> struct.
+        /// </summary>
+        /// <param name="r">Red color value.</param>
+        /// <param name="g">Green color value.</param>
+        /// <param name="b">Blue color value.</param>
         public EmbedColor(short r, short g, short b)
             => RGB = (r, g, b);
         #endregion
 
         #region Properties
+        /// <summary>
+        ///     Gets or sets the hex color code for the color.
+        /// </summary>
         public string Hexadecimal
         {
             get => _value.ToString("X");
@@ -53,12 +73,18 @@ namespace DiscordIntegration.Entities.Embeds
             }
         }
 
+        /// <summary>
+        ///     Gets or sets the decimal color code for the color.
+        /// </summary>
         public decimal Decimal
         {
             get => _value;
             set => _value = (int)value;
         }
 
+        /// <summary>
+        ///     Gets or sets the RGB color code for the color.
+        /// </summary>
         public (short R, short G, short B) RGB
         {
             get => ((short)(_value >> 16), (short)(_value >> 8), (short)_value);

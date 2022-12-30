@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 using System.Net.Http.Headers;
-using System.Net.Mail;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
@@ -30,18 +29,28 @@ using DiscordIntegration.Entities.Embeds;
 
 namespace DiscordIntegration
 {
+    /// <summary>
+    ///     A client Discord Webhooks.
+    /// </summary>
     public class WebhookClient : IDisposable
     {
         private HttpClient _client;
 
         private bool _isDisposed;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="WebhookClient" /> class.
+        /// </summary>
+        /// <param name="webhookUrl">Webhook URL.</param>
         public WebhookClient(string webhookUrl)
         {
             _client = new HttpClient();
             WebhookUrl = webhookUrl;
         }
 
+        /// <summary>
+        ///     Gets or sets the webhook URL.
+        /// </summary>
         public string WebhookUrl
         {
             get => _client.BaseAddress.ToString();
@@ -57,6 +66,14 @@ namespace DiscordIntegration
             }
         }
 
+        /// <summary>
+        ///     Executes this webhook.
+        /// </summary>
+        /// <param name="message">Message to send.</param>
+        /// <param name="profile">Overrides the webhook profile.</param>
+        /// <returns>The Message ID.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
+        /// <exception cref="Exception">Thrown when the webhook fails to execute.</exception>
         public async Task<ulong> ExecuteAsync(WebhookMessage message, WebhookProfile profile = null)
         {
             if (_isDisposed)
@@ -83,6 +100,15 @@ namespace DiscordIntegration
             return ulong.Parse(JsonDocument.Parse(await response.Content.ReadAsStringAsync()).RootElement.GetProperty("id").GetString());
         }
 
+        /// <summary>
+        ///     Executes this webhook.
+        /// </summary>
+        /// <param name="message">Message to send.</param>
+        /// <param name="attachment">Attachment to send.</param>
+        /// <param name="profile">Overrides the webhook profile.</param>
+        /// <returns>The Message ID.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
+        /// <exception cref="Exception">Thrown when the webhook fails to execute.</exception>
         public async Task<ulong> ExecuteAsync(WebhookMessage message, WebhookAttachment attachment, WebhookProfile profile = null)
         {
             if (_isDisposed)
@@ -124,6 +150,15 @@ namespace DiscordIntegration
             return ulong.Parse(JsonDocument.Parse(await response.Content.ReadAsStringAsync()).RootElement.GetProperty("id").GetString());
         }
 
+        /// <summary>
+        ///     Executes this webhook.
+        /// </summary>
+        /// <param name="message">Message to send.</param>
+        /// <param name="attachments">Attachments to send.</param>
+        /// <param name="profile">Overrides the webhook profile.</param>
+        /// <returns>The Message ID.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
+        /// <exception cref="Exception">Thrown when the webhook fails to execute.</exception>
         public async Task<ulong> ExecuteAsync(WebhookMessage message, IEnumerable<WebhookAttachment> attachments, WebhookProfile profile = null)
         {
             if (_isDisposed)
@@ -163,6 +198,14 @@ namespace DiscordIntegration
             return ulong.Parse(JsonDocument.Parse(await response.Content.ReadAsStringAsync()).RootElement.GetProperty("id").GetString());
         }
 
+        /// <summary>
+        ///     Overwrites a message.
+        /// </summary>
+        /// <param name="messageId">Message ID of the message to edit.</param>
+        /// <param name="newMessage">The new message.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
+        /// <exception cref="Exception">Thrown when the webhook fails to execute.</exception>
         public async Task EditMessageAsync(ulong messageId, WebhookMessage newMessage)
         {
             if (_isDisposed)
@@ -184,7 +227,61 @@ namespace DiscordIntegration
             if (!response.IsSuccessStatusCode)
                 throw new Exception($"Request failed with status code {response.StatusCode}.\n\n{await response.Content.ReadAsStringAsync()}");
         }
+        
+        /// <summary>
+        ///     Overwrites a message.
+        /// </summary>
+        /// <param name="messageId">Message ID of the message to edit.</param>
+        /// <param name="newMessage">The new message.</param>
+        /// <param name="newAttachment">Attachment to send.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
+        /// <exception cref="Exception">Thrown when the webhook fails to execute.</exception>
+        public async Task EditMessageAsync(ulong messageId, WebhookMessage newMessage, WebhookAttachment newAttachment)
+        {
+            if (_isDisposed)
+                throw new ObjectDisposedException("WebhookClient");
 
+            var payload = new Payload()
+            {
+                Content = newMessage.Content,
+                Embeds = newMessage.Embeds?.ToArray(),
+                Attachments = new[] { newAttachment }
+            };
+
+            var content = new MultipartFormDataContent()
+            {
+                {
+                    new StringContent(JsonSerializer.Serialize(payload), new MediaTypeHeaderValue("application/json")),
+                    "payload_json"
+                },
+                {
+                    new ByteArrayContent(newAttachment.FileData),
+                    $"files[{newAttachment.Id}]",
+                    newAttachment.FileName
+                }
+            };
+
+            var response = await _client.SendAsync(new HttpRequestMessage()
+            {
+                Method = HttpMethod.Post,
+                Content = content,
+                RequestUri = new Uri(WebhookUrl + $"/messages/{messageId}")
+            });
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Request failed with status code {response.StatusCode}.");
+        }
+
+        /// <summary>
+        ///     Overwrites a message.
+        /// </summary>
+        /// <param name="messageId">Message ID of the message to edit.</param>
+        /// <param name="newMessage">The new message.</param>
+        /// <param name="newAttachments">Attachments to send.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
+        /// <exception cref="Exception">Thrown when the webhook fails to execute.</exception>
         public async Task EditMessageAsync(ulong messageId, WebhookMessage newMessage, IEnumerable<WebhookAttachment> newAttachments)
         {
             if (_isDisposed)
@@ -219,8 +316,18 @@ namespace DiscordIntegration
                 throw new Exception($"Request failed with status code {response.StatusCode}.");
         }
 
+        /// <summary>
+        ///     Deletes a message.
+        /// </summary>
+        /// <param name="messageId">Message ID of the message to edit.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
+        /// <exception cref="Exception">Thrown when the webhook fails to execute.</exception>
         public async Task DeleteMessageAsync(ulong messageId)
         {
+            if (_isDisposed)
+                throw new ObjectDisposedException("WebhookClient");
+
             var response = await _client.SendAsync(new HttpRequestMessage()
             {
                 Method = HttpMethod.Delete,
