@@ -48,7 +48,7 @@ namespace DiscordIntegration
             set
             {
                 if (_isDisposed)
-                    throw new ObjectDisposedException(nameof(WebhookClient));
+                    throw new ObjectDisposedException("WebhookClient");
 
                 if (!Regex.IsMatch(value, @"https:\/\/discord\.com\/api\/(v\d+\/)?webhooks\/\d{17,19}\/.{68}"))
                     throw new Exception("Please provide a valid webhook URL.");
@@ -60,7 +60,7 @@ namespace DiscordIntegration
         public async Task<ulong> ExecuteAsync(WebhookMessage message, WebhookProfile profile = null)
         {
             if (_isDisposed)
-                throw new ObjectDisposedException(nameof(WebhookClient));
+                throw new ObjectDisposedException("WebhookClient");
 
             var payload = new Payload()
             {
@@ -86,7 +86,7 @@ namespace DiscordIntegration
         public async Task<ulong> ExecuteAsync(WebhookMessage message, WebhookAttachment attachment, WebhookProfile profile = null)
         {
             if (_isDisposed)
-                throw new ObjectDisposedException(nameof(WebhookClient));
+                throw new ObjectDisposedException("WebhookClient");
 
             var payload = new Payload()
             {
@@ -127,7 +127,7 @@ namespace DiscordIntegration
         public async Task<ulong> ExecuteAsync(WebhookMessage message, IEnumerable<WebhookAttachment> attachments, WebhookProfile profile = null)
         {
             if (_isDisposed)
-                throw new ObjectDisposedException(nameof(WebhookClient));
+                throw new ObjectDisposedException("WebhookClient");
 
             var payload = new Payload()
             {
@@ -166,7 +166,7 @@ namespace DiscordIntegration
         public async Task EditMessageAsync(ulong messageId, WebhookMessage newMessage)
         {
             if (_isDisposed)
-                throw new ObjectDisposedException(nameof(WebhookClient));
+                throw new ObjectDisposedException("WebhookClient");
 
             var payload = new Payload()
             {
@@ -188,7 +188,7 @@ namespace DiscordIntegration
         public async Task EditMessageAsync(ulong messageId, WebhookMessage newMessage, IEnumerable<WebhookAttachment> newAttachments)
         {
             if (_isDisposed)
-                throw new ObjectDisposedException(nameof(WebhookClient));
+                throw new ObjectDisposedException("WebhookClient");
 
             var payload = new Payload()
             {
