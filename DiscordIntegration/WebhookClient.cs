@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 using System.Net.Http.Headers;
+using System.Net.Mail;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
@@ -79,6 +80,47 @@ namespace DiscordIntegration
             if (!response.IsSuccessStatusCode)
                 throw new Exception($"Request failed with status code {response.StatusCode}.\n\n{await response.Content.ReadAsStringAsync()}");
             
+            return ulong.Parse(JsonDocument.Parse(await response.Content.ReadAsStringAsync()).RootElement.GetProperty("id").GetString());
+        }
+
+        public async Task<ulong> ExecuteAsync(WebhookMessage message, WebhookAttachment attachment, WebhookProfile profile = null)
+        {
+            if (_isDisposed)
+                throw new ObjectDisposedException(nameof(WebhookClient));
+
+            var payload = new Payload()
+            {
+                Content = message.Content,
+                Embeds = message.Embeds?.ToArray(),
+                Username = profile?.Username,
+                AvatarUrl = profile?.AvatarUrl,
+                Attachments = new[] { attachment }
+            };
+
+            var content = new MultipartFormDataContent
+            {
+                {
+                    new StringContent(JsonSerializer.Serialize(payload), new MediaTypeHeaderValue("application/json")),
+                    "payload_json"
+                },
+                {
+                    new ByteArrayContent(attachment.FileData),
+                    $"files[{attachment.Id}]",
+                    attachment.FileName
+                }
+            };
+
+            var response = await _client.SendAsync(new HttpRequestMessage()
+            {
+                Method = HttpMethod.Post,
+                Content = content,
+                RequestUri = new Uri(WebhookUrl + "?wait=true")
+            });
+
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Request failed with status code {response.StatusCode}.\n\n{await response.Content.ReadAsStringAsync()}");
+
             return ulong.Parse(JsonDocument.Parse(await response.Content.ReadAsStringAsync()).RootElement.GetProperty("id").GetString());
         }
 
