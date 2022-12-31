@@ -9,5 +9,5 @@
    <a href="https://github.com/BujjuIsDumb/DiscordIntegration/blob/master/LICENSE"><img src="https://img.shields.io/github/license/BujjuIsDumb/DiscordIntegration"></a>
 </p>
 <p align="center">
-   <a href="https://www.nuget.org/packages/DiscordIntegration/"><img src="https://img.shields.io/badge/Download-blue" width=100></a>
+   <a href="https://www.nuget.org/packages/DiscordIntegration/"><img src="https://img.shields.io/badge/Install-blue" width=100></a>
 </p>
