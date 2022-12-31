@@ -24,6 +24,9 @@ using System.Text.Json.Serialization;
 
 namespace DiscordIntegration.Entities.Embeds
 {
+    /// <summary>
+    ///     Author information for <see cref="Embed"/> objects.
+    /// </summary>
     public sealed class EmbedAuthor
     {
         /// <summary>

@@ -32,14 +32,14 @@ namespace DiscordIntegration.Entities
         /// <summary>
         ///     Initializes a new instance of the <see cref="WebhookAttachment"/> class.
         /// </summary>
-        /// <param name="file">File that this attachment represents.</param>
+        /// <param name="path">Path to the file.</param>
         /// <param name="altText">Alt-text for the file.</param>
         /// <param name="spoiler">Whether the file should have the spoiler tag.</param>
-        public WebhookAttachment(FileInfo file, string altText = null, bool spoiler = false)
+        public WebhookAttachment(string path, string altText = null, bool spoiler = false)
         {
-            FileName = (spoiler ? "SPOILER_" : null) + file.Name;
+            FileName = (spoiler ? "SPOILER_" : null) + Path.GetFileName(path);
             AltText = altText;
-            FileData = File.ReadAllBytes(file.FullName);
+            FileData = File.ReadAllBytes(path);
         }
 
         internal WebhookAttachment(WebhookAttachment original, int id)
