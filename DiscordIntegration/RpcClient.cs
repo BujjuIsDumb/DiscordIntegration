@@ -41,7 +41,8 @@ namespace DiscordIntegration
         /// </summary>
         /// <param name="appId">Application/client ID from the <see href="https://discord.com/developers">Discord Developer Portal</see>.</param>
         /// <param name="steamId">Steam app ID if the app is on Steam.</param>
-        /// <exception cref="FileNotFoundException">Thrown when the Discord Game SDK is not found.</exception>
+        /// <exception cref="DllNotFoundException">Thrown when the Discord Game SDK is not found.</exception>
+        /// <exception cref="Exception">Thrown when the client fails to start.</exception>
         public RpcClient(ulong appId, uint? steamId = null)
         {
             if (!File.Exists(".\\discord_game_sdk.dll"))
@@ -54,6 +55,9 @@ namespace DiscordIntegration
                 _client.GetActivityManager().RegisterSteam(steamId.Value);
         }
 
+        /// <summary>
+        ///     Sets the Rich Presence.
+        /// </summary>
         public RichPresence Presence
         {
             set
