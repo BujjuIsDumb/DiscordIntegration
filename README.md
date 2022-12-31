@@ -9,6 +9,5 @@
    <a href="https://github.com/BujjuIsDumb/DiscordIntegration/blob/master/LICENSE"><img src="https://img.shields.io/github/license/BujjuIsDumb/DiscordIntegration"></a>
 </p>
 <p align="center">
-   <a href="https://www.nuget.org/packages/DiscordIntegration/"><img src="https://img.shields.io/nuget/v/DiscordIntegration?label=download"></a>
-   <a href="https://www.nuget.org/packages/DiscordIntegration/#versions-body-tab"><img src="https://img.shields.io/nuget/vpre/DiscordIntegration?label=prerelease%20download"></a>
+   <a href="https://www.nuget.org/packages/DiscordIntegration/"><img src="https://img.shields.io/badge/Download-blue" width=100></a>
 </p>
