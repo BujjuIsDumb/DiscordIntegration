@@ -32,6 +32,18 @@ namespace DiscordIntegration
     /// <summary>
     ///     A client Discord Webhooks.
     /// </summary>
+    /// <example>
+    /// Send messages to Discord using webhooks.
+    /// <code>
+    ///     using var myWebhookClient = new WebhookClient("MY_WEBHOOK_URL");
+    ///     var myWebhookMessage = new WebhookMessage()
+    ///         .AddEmbed(new Embed()
+    ///         .WithTitle("Discord Integration")
+    ///         .WithDescription("A very cool library.")
+    ///         .WithColor(EmbedColor.Blurple));
+    ///     await myWebhookClient.ExecuteAsync(myWebhookMessage)
+    /// </code>
+    /// </example>
     public class WebhookClient : IDisposable
     {
         private HttpClient _client;

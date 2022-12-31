@@ -28,6 +28,16 @@ namespace DiscordIntegration
     /// <summary>
     ///     A client for the Discord RPC.
     /// </summary>
+    /// <example>
+    /// Let users show off your program on Discord with Rich Presence.
+    /// <code>
+    ///     using var myRpcClient = new RpcClient(1234567890);
+    ///     myRpcClient.Presence = new RichPresence()
+    ///         .WithState("Playing a cool game")
+    ///         .WithDetails("Doing something cool")
+    ///         .WithParty(new RichPresenceParty(currentSize: 4, maxSize: 5));
+    /// </code>
+    /// </example>
     public class RpcClient : IDisposable
     {
         private Discord _client;
