@@ -32,6 +32,8 @@ namespace DiscordIntegration
     {
         private Discord _client;
 
+        private bool _isInitialized;
+
         private bool _isDisposed;
 
         /// <summary>
@@ -43,13 +45,63 @@ namespace DiscordIntegration
         public RpcClient(ulong appId, uint? steamId = null)
         {
             if (!File.Exists(".\\discord_game_sdk.dll"))
-                throw new FileNotFoundException("The Discord Game SDK was not found. Please place the DLL file in the same directory as the executable.");
+                throw new DllNotFoundException("The Discord Game SDK was not found. Please place the DLL file in the same directory as the executable.");
 
-            _client = new Discord((long)appId, (ulong)CreateFlags.Default);
+            try { _client = new Discord((long)appId, (ulong)CreateFlags.Default); }
+            catch { throw new Exception("Failed to connect to Discord."); }
+            
             if (steamId != null)
                 _client.GetActivityManager().RegisterSteam(steamId.Value);
         }
 
+        public RichPresence Presence
+        {
+            set
+            {
+                if (_isDisposed)
+                    throw new ObjectDisposedException("RpcClient");
+
+                _client.GetActivityManager().UpdateActivity(value.ToActivity(), (result) =>
+                {
+                    if (result != Result.Ok)
+                        throw new Exception($"Failed to update presence: {result}");
+                });
+
+                // Start the callbacks if not started already.
+                if (!_isInitialized)
+                {
+                    Task.Run(async () =>
+                    {
+                        while (!_isDisposed)
+                        {
+                            _client.RunCallbacks();
+                            await Task.Delay(1000 / 6);
+                        }
+                    }).ConfigureAwait(false);
+                    
+                    _isInitialized = true;
+                }
+            }
+        }
+        
+        /// <exception cref="Exception">Thrown when the presence fails to clear.</exception>
+        public void Dispose()
+        {
+            _client.GetActivityManager().ClearActivity((result) =>
+            {
+                if (result != Result.Ok)
+                    throw new Exception($"Failed to clear presence: {result}");
+            });
+            
+            _client.Dispose();
+            _isInitialized = false;
+            _isDisposed = true;
+
+
+            GC.SuppressFinalize(this);
+        }
+
+        #region Deprecated
         /// <summary>
         ///     Starts the client.
         /// </summary>
@@ -57,25 +109,23 @@ namespace DiscordIntegration
         /// <returns>A task that represents the asynchronous operation.</returns>
         /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
         /// <exception cref="Exception">Thrown when the presence fails to update.</exception>
+        [Obsolete("The client is automatically initialized now. Use the Presence property instead.")]
         public async Task StartAsync(RichPresence presence)
         {
             if (_isDisposed)
                 throw new ObjectDisposedException("RpcClient");
-
-            _client.GetActivityManager().UpdateActivity(presence.ToActivity(), (res) =>
+            
+            _client.GetActivityManager().UpdateActivity(presence.ToActivity(), (result) =>
             {
-                if (res != Result.Ok)
-                    throw new Exception($"Failed to update activity: {res}");
+                if (result != Result.Ok)
+                    throw new Exception($"Failed to update presence: {result}");
             });
 
-            Task.Run(async () =>
+            while (!_isDisposed)
             {
-                while (!_isDisposed)
-                {
-                    _client.RunCallbacks();
-                    await Task.Delay(1000 / 60);
-                }
-            }).ConfigureAwait(false);
+                _client.RunCallbacks();
+                await Task.Delay(1000 / 60);
+            }
         }
 
         /// <summary>
@@ -84,31 +134,18 @@ namespace DiscordIntegration
         /// <param name="presence">The presence to use.</param>
         /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
         /// <exception cref="Exception">Thrown when the presence fails to update.</exception>
+        [Obsolete("Use the Presence property instead.")]
         public void Update(RichPresence presence)
         {
             if (_isDisposed)
                 throw new ObjectDisposedException("RpcClient");
-
-            _client.GetActivityManager().UpdateActivity(presence.ToActivity(), (res) =>
-            {
-                if (res != Result.Ok)
-                    throw new Exception($"Failed to update activity: {res}");
-            });
-        }
-
-        /// <exception cref="Exception">Thrown when the presence fails to clear.</exception>
-        public void Dispose()
-        {
-            _client.GetActivityManager().ClearActivity((result) =>
+            
+            _client.GetActivityManager().UpdateActivity(presence.ToActivity(), (result) =>
             {
                 if (result != Result.Ok)
-                    throw new Exception($"Failed to update activity. Result: {result}");
+                    throw new Exception($"Failed to update presence: {result}");
             });
-            
-            _client.Dispose();
-            _isDisposed = true;
-
-            GC.SuppressFinalize(this);
         }
+        #endregion
     }
 }
