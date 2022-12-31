@@ -52,14 +52,14 @@ namespace DiscordIntegration.Entities.Embeds
         ///     Gets or sets the timestamp of this embed.
         /// </summary>
         [JsonPropertyName("timestamp")]
-        public DateTime Timestamp { get; set; }
+        public DateTime? Timestamp { get; set; }
 
         /// <summary>
         ///     Gets or sets the color information for this embed.
         /// </summary>
         [JsonPropertyName("color")]
         [JsonConverter(typeof(EmbedColor.Converter))]
-        public EmbedColor Color { get; set; }
+        public EmbedColor? Color { get; set; }
 
         /// <summary>
         ///     Gets or sets the footer information for this embed.
