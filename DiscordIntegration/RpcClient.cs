@@ -68,11 +68,14 @@ namespace DiscordIntegration
                     throw new Exception($"Failed to update activity: {res}");
             });
 
-            while (!_isDisposed)
+            Task.Run(async () =>
             {
-                _client.RunCallbacks();
-                await Task.Delay(1000 / 60);
-            }
+                while (!_isDisposed)
+                {
+                    _client.RunCallbacks();
+                    await Task.Delay(1000 / 60);
+                }
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
