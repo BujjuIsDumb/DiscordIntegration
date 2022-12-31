@@ -35,7 +35,6 @@ namespace DiscordIntegration.Entities
         /// <exception cref="ArgumentException">Thrown when <paramref name="timestamp"/> for the specified display type.</exception>
         public RichPresenceTimestamp(DateTime timestamp, TimestampDisplayType displayType)
         {
-
             if (displayType == TimestampDisplayType.Left)
             {
                 if (timestamp < DateTime.Now)
