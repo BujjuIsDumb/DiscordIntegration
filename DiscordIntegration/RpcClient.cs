@@ -29,11 +29,14 @@ namespace DiscordIntegration
     ///     A client for the Discord RPC.
     /// </summary>
     /// <example>
-    /// Use the client
+    /// Initialize the client
     /// <code>
-    ///     using var client = new RpcClient(myAppId);
-    ///     client.Presence = new RichPresence()
-    ///         .WithState("Example");
+    /// using var client = new RpcClient(1234567890);
+    /// </code>
+    /// Set the presence
+    /// <code>
+    /// client.Presence = new RichPresence()
+    ///     .WithState("Example");
     /// </code>
     /// </example>
     public class RpcClient : IDisposable

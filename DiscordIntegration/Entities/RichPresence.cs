@@ -27,6 +27,13 @@ namespace DiscordIntegration.Entities
     /// <summary>
     ///     Represents a Discord rich presence activity.
     /// </summary>
+    /// <example>
+    /// Construct a rich presence.
+    /// <code>
+    ///     var presence = new RichPresence()
+    ///         .WithState("Example");
+    /// </code>
+    /// </example>
     public sealed class RichPresence
     {
         /// <summary>

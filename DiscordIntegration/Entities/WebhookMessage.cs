@@ -27,6 +27,13 @@ namespace DiscordIntegration.Entities
     /// <summary>
     ///    Represents a message to be sent by a webhook.
     /// </summary>
+    /// <example>
+    /// Construct a message
+    /// <code>
+    ///     var message = new WebhookMessage()
+    ///         .WithContent("Example");
+    /// </code>
+    /// </example>
     public sealed class WebhookMessage
     {
         /// <summary>

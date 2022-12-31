@@ -25,6 +25,14 @@ namespace DiscordIntegration.Entities
     /// <summary>
     ///     Profile information to override the webhook profile.
     /// </summary>
+    /// <example>
+    /// Construct a profile override
+    /// <code>
+    ///     var profile = new WebhookProfile()
+    ///         .WithUsername("Example")
+    ///         .WithAvatarUrl("https://example.com/avatar.png");
+    /// </code>
+    /// </example>
     public sealed class WebhookProfile
     {
         /// <summary>

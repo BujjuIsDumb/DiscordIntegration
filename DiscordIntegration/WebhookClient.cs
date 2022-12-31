@@ -33,11 +33,14 @@ namespace DiscordIntegration
     ///     A client Discord Webhooks.
     /// </summary>
     /// <example>
-    /// Use the client
+    /// Initialize the client
     /// <code>
-    ///     using var client = new WebhookClient(myWebhookUrl);
-    ///     await client.ExecuteAsync(new WebhookMessage()
-    ///         .WithContent("Example"));
+    ///     using var client = new WebhookClient("https://discord.com/api/webhooks/1234567890/abcdefghijklmnopqrstuvwxyz");
+    /// </code>
+    /// Send a message
+    /// <code>
+    ///     client.ExecuteAsync(new WebhookMessage()
+    ///         .WithContent("Example");
     /// </code>
     /// </example>
     public class WebhookClient : IDisposable
