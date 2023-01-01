@@ -26,19 +26,8 @@ using DiscordIntegration.RpcCore;
 namespace DiscordIntegration
 {
     /// <summary>
-    ///     A client for the Discord RPC.
+    ///     A client for Discord RPC.
     /// </summary>
-    /// <example>
-    /// Initialize the client
-    /// <code>
-    /// using var client = new RpcClient(1234567890);
-    /// </code>
-    /// Set the presence
-    /// <code>
-    /// client.Presence = new RichPresence()
-    ///     .WithState("Example");
-    /// </code>
-    /// </example>
     public class RpcClient : IDisposable
     {
         private Discord _client;
@@ -111,7 +100,6 @@ namespace DiscordIntegration
             _client.Dispose();
             _isInitialized = false;
             _isDisposed = true;
-
 
             GC.SuppressFinalize(this);
         }

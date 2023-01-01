@@ -27,15 +27,6 @@ namespace DiscordIntegration.Entities.Embeds
     /// <summary>
     ///     Represents a Discord embed.
     /// </summary>
-    /// <example>
-    /// Construct an embed
-    /// <code>
-    ///     var embed = new Embed()
-    ///         .WithTitle("Example")
-    ///         .WithDescription("Example")
-    ///         .WithColor(DiscordColor.Blurple);
-    /// </code>
-    /// </example>
     public sealed class Embed
     {
         /// <summary>
