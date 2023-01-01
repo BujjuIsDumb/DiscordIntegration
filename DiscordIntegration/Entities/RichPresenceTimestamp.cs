@@ -32,7 +32,7 @@ namespace DiscordIntegration.Entities
         /// </summary>
         /// <param name="timestamp"><see cref="DateTime"/> representing the start or end point of this timestamp.</param>
         /// <param name="displayType">Whether this should be a "left" or "elapsed" timestamp.</param>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="timestamp"/> for the specified display type.</exception>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="timestamp"/> is invalid for the specified display type.</exception>
         public RichPresenceTimestamp(DateTime timestamp, TimestampDisplayType displayType)
         {
             if (displayType == TimestampDisplayType.Left)
@@ -67,13 +67,13 @@ namespace DiscordIntegration.Entities
         public enum TimestampDisplayType
         {
             /// <summary>
-            ///     Defines that this timestamp should be displayed as a "left" timestamp. The timestamp should be greater than the current time.
+            ///     Defines that this timestamp should be displayed as a "left" timestamp. The timestamp should be after the current time.
             ///     <para>00:00 left</para>
             /// </summary>
             Left = 0,
 
             /// <summary>
-            ///     Defines that this timestamp should be displayed as a "elapsed" timestamp. The timestamp should be less than the current time.
+            ///     Defines that this timestamp should be displayed as a "elapsed" timestamp. The timestamp should be before the current time.
             ///     <para>00:00 elapsed</para>
             /// </summary>
             Elapsed = 1

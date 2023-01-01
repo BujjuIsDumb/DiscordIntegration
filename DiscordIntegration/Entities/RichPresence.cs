@@ -74,7 +74,7 @@ namespace DiscordIntegration.Entities
         ///     Adds details to this RPC.
         /// </summary>
         /// <param name="details">Details to add.</param>
-        /// <returns></returns>
+        /// <returns>This RPC.</returns>
         public RichPresence WithDetails(string details)
         {
             Details = details;
