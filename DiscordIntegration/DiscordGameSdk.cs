@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace DiscordIntegration.RpcCore;
+namespace DiscordIntegration.DiscordGameSdk;
 
 internal enum Result
 {

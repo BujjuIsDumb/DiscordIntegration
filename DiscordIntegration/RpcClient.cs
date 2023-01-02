@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 using DiscordIntegration.Entities;
-using DiscordIntegration.RpcCore;
+using DiscordIntegration.DiscordGameSdk;
 
 namespace DiscordIntegration
 {
