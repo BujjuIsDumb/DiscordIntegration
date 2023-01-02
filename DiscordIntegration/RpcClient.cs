@@ -103,52 +103,5 @@ namespace DiscordIntegration
 
             GC.SuppressFinalize(this);
         }
-
-        #region Deprecated
-        /// <summary>
-        ///     Starts the client.
-        /// </summary>
-        /// <param name="presence">The presence to start with.</param>
-        /// <returns>A task that represents the asynchronous operation.</returns>
-        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
-        /// <exception cref="Exception">Thrown when the presence fails to update.</exception>
-        [Obsolete("The client is automatically initialized now. Use the Presence property instead.")]
-        public async Task StartAsync(RichPresence presence)
-        {
-            if (_isDisposed)
-                throw new ObjectDisposedException("RpcClient");
-            
-            _client.GetActivityManager().UpdateActivity(presence.ToActivity(), (result) =>
-            {
-                if (result != Result.Ok)
-                    throw new Exception($"Failed to update presence: {result}");
-            });
-
-            while (!_isDisposed)
-            {
-                _client.RunCallbacks();
-                await Task.Delay(1000 / 60);
-            }
-        }
-
-        /// <summary>
-        ///     Updates the presence.
-        /// </summary>
-        /// <param name="presence">The presence to use.</param>
-        /// <exception cref="ObjectDisposedException">Thrown when the client is disposed.</exception>
-        /// <exception cref="Exception">Thrown when the presence fails to update.</exception>
-        [Obsolete("Use the Presence property instead.")]
-        public void Update(RichPresence presence)
-        {
-            if (_isDisposed)
-                throw new ObjectDisposedException("RpcClient");
-            
-            _client.GetActivityManager().UpdateActivity(presence.ToActivity(), (result) =>
-            {
-                if (result != Result.Ok)
-                    throw new Exception($"Failed to update presence: {result}");
-            });
-        }
-        #endregion
     }
 }
