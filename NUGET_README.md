@@ -15,7 +15,7 @@ var myWebhookMessage = new WebhookMessage()
     .WithDescription("A very cool library.")
     .WithColor(EmbedColor.Blurple));
 
-await myWebhookClient.ExecuteAsync(myWebhookMessage)
+await myWebhookClient.ExecuteAsync(myWebhookMessage);
 ```
 
 ## Rich Presence
